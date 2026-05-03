@@ -1,0 +1,27 @@
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
+
+namespace ScanPoint.Models.DTOs.User
+{
+    // DTO për krijimin e user-it të ri nga Admin/Manager
+    public class CreateUserDto
+    {
+        [Required]
+        public string Username { get; set; } = string.Empty;
+
+        [Required, EmailAddress]
+        public string Email { get; set; } = string.Empty;
+
+        [Required, MinLength(6)]
+        public string Password { get; set; } = string.Empty;
+
+      
+        [Required]
+        public string Role { get; set; } = string.Empty;
+
+        public IFormFile? File { get; set; }
+    }
+
+    
+    
+}

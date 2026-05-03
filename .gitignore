@@ -1,0 +1,50 @@
+# .NET
+bin/
+obj/
+.vs/
+
+# React / Node
+node_modules/
+dist/
+build/
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+
+
+## --- .NET / Visual Studio ---
+[Bb]in/
+[Oo]bj/
+.vs/
+.user/
+*.user
+*.userosscache
+*.sln.docstates
+
+## --- Konfigurimet me fjalekalime (MOS I BENI COMMIT) ---
+# Bllokon skedarin kryesor nese permban fjalekalime reale
+# appsettings.json 
+
+# Rekomandohet te bllokohen keto per zhvillim lokal
+appsettings.Development.json
+appsettings.Local.json
+appsettings.json
+
+
+## --- Entity Framework ---
+*.db
+*.db-shm
+*.db-wal
+
+## --- User Secrets ---
+# Ky eshte vendi ku .NET ruan fjalekalimet jashte projektit
+secrets.json
+
+## --- Operating System ---
+.DS_Store
+Thumbs.db
+wwwroot/uploads/

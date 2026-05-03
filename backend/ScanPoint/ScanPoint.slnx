@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../ScanPoint.Controllers/ScanPoint.Controllers.csproj" />
+  <Project Path="../ScanPoint.Models/ScanPoint.Models.csproj" />
+  <Project Path="../ScanPoint.Repositories/ScanPoint.Repositories.csproj" Id="dfb51ff9-c7b2-4b34-aa7f-267ca85ab4d7" />
+  <Project Path="ScanPoint.csproj" />
+</Solution>
