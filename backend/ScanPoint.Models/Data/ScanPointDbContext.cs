@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ScanPoint.Models.Models;
+using ScanPoint.Models.Models;
 
 namespace ScanPoint.Models.Data
 {
@@ -10,6 +11,9 @@ namespace ScanPoint.Models.Data
         {
         }
 
+        // ===============================
+        // DBSets
+        // ===============================
         public DbSet<User> Users { get; set; }
         public DbSet<Cashier> Cashiers { get; set; }
         public DbSet<Manager> Managers { get; set; }
@@ -18,41 +22,46 @@ namespace ScanPoint.Models.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
 
-        
+        public DbSet<Shkolla> Shkollat { get; set; }
+        public DbSet<Nxenesi> Nxenesit { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
             // ===============================
-            // SOFT DELETE — Global Query Filter
-            // Automatikisht filtron IsDeleted=true nga të gjitha queries
-            // ✅ GetByIdAsync, GetAllAsync, GetByAdminIdAsync — asnjëra nuk do kthejë shop të fshirë
-            // ⚠️  Nëse dëshiron të shohësh edhe të fshirat: _context.Shops.IgnoreQueryFilters()
+            // GLOBAL QUERY FILTERS (SOFT DELETE)
             // ===============================
-            modelBuilder.Entity<Shop>().HasQueryFilter(s => !s.IsDeleted);
+            modelBuilder.Entity<Shop>()
+                .HasQueryFilter(s => !s.IsDeleted);
 
-            // Soft delete filter për Users (Manager / Cashier)
-            // ⚠️  Admin nuk filtrohet këtu — Admin ka IsDeleted=false gjithmonë
-            // Përdor IgnoreQueryFilters() kur duhet të shohësh të fshirat
-            modelBuilder.Entity<User>().HasQueryFilter(u => !u.IsDeleted);
+            modelBuilder.Entity<User>()
+                .HasQueryFilter(u => !u.IsDeleted);
 
             // ===============================
-            // TPT – User inheritance
+            // TPT INHERITANCE
             // ===============================
             modelBuilder.Entity<User>().ToTable("Users");
             modelBuilder.Entity<Manager>().ToTable("Managers");
             modelBuilder.Entity<Cashier>().ToTable("Cashiers");
 
-         
+            // ===============================
+            // UNIQUE / INDEXES
+            // ===============================
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Email)
+                .IsUnique();
 
-           
+            modelBuilder.Entity<Shop>()
+                .HasIndex(s => new { s.Name, s.AdminId })
+                .IsUnique();
 
             modelBuilder.Entity<Product>()
-       .HasIndex(p => new { p.Barcode, p.ShopId })
-       .IsUnique();
+                .HasIndex(p => new { p.Barcode, p.ShopId })
+                .IsUnique();
+
             // ===============================
-            // Shop relations
+            // RELATIONS - SHOP
             // ===============================
             modelBuilder.Entity<Shop>()
                 .HasMany(s => s.Managers)
@@ -84,12 +93,8 @@ namespace ScanPoint.Models.Data
                 .HasForeignKey(s => s.AdminId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            modelBuilder.Entity<Shop>()
-    .HasIndex(s => new { s.Name, s.AdminId })
-    .IsUnique();
-
             // ===============================
-            // Manager → Cashiers
+            // MANAGER - CASHIER
             // ===============================
             modelBuilder.Entity<Manager>()
                 .HasMany(m => m.ManagedCashiers)
@@ -98,7 +103,7 @@ namespace ScanPoint.Models.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             // ===============================
-            // Cashier → Invoices
+            // CASHIER - INVOICE
             // ===============================
             modelBuilder.Entity<Cashier>()
                 .HasMany(c => c.Invoices)
@@ -107,7 +112,7 @@ namespace ScanPoint.Models.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // ===============================
-            // InvoiceItem relations
+            // INVOICE ITEM RELATIONS
             // ===============================
             modelBuilder.Entity<InvoiceItem>()
                 .HasOne(ii => ii.Product)
@@ -122,7 +127,7 @@ namespace ScanPoint.Models.Data
                 .OnDelete(DeleteBehavior.Cascade);
 
             // ===============================
-            // User → Shop (TPT safe)
+            // USER - SHOP (TPT SAFE)
             // ===============================
             modelBuilder.Entity<User>()
                 .HasOne(u => u.Shop)
@@ -130,44 +135,33 @@ namespace ScanPoint.Models.Data
                 .HasForeignKey(u => u.ShopId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            
-
-           
+            // ===============================
+            // PRECISION FIELDS
+            // ===============================
             modelBuilder.Entity<Product>()
-                .Property(p => p.Price).HasPrecision(18, 2);
+                .Property(p => p.Price)
+                .HasPrecision(18, 2);
 
             modelBuilder.Entity<Invoice>()
-                .Property(i => i.TotalAmount).HasPrecision(18, 2);
+                .Property(i => i.TotalAmount)
+                .HasPrecision(18, 2);
 
             modelBuilder.Entity<InvoiceItem>()
-                .Property(i => i.Price).HasPrecision(18, 2);
-
+                .Property(i => i.Price)
+                .HasPrecision(18, 2);
 
             // ===============================
-            // INDEXES (PERFORMANCE BOOST 🚀)
+            // PERFORMANCE INDEXES
             // ===============================
-
-            // User
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.Email)
-                .IsUnique();
-
-            modelBuilder.Entity<User>()
-                .HasIndex(u => u.ShopId);
-
-            // Cashier
             modelBuilder.Entity<Cashier>()
                 .HasIndex(c => c.ManagerId);
 
-            // Shop
             modelBuilder.Entity<Shop>()
                 .HasIndex(s => s.AdminId);
 
-            // Product
             modelBuilder.Entity<Product>()
                 .HasIndex(p => p.ShopId);
 
-            // Invoice
             modelBuilder.Entity<Invoice>()
                 .HasIndex(i => i.ShopId);
 
@@ -177,16 +171,23 @@ namespace ScanPoint.Models.Data
             modelBuilder.Entity<Invoice>()
                 .HasIndex(i => i.CreatedAt);
 
-            // Composite (raporte)
             modelBuilder.Entity<Invoice>()
                 .HasIndex(i => new { i.ShopId, i.CreatedAt });
 
-            // InvoiceItem
             modelBuilder.Entity<InvoiceItem>()
                 .HasIndex(ii => ii.InvoiceId);
 
             modelBuilder.Entity<InvoiceItem>()
                 .HasIndex(ii => ii.ProductId);
+
+            // ===============================
+            // SHKOLLA - NXENESI RELATION
+            // ===============================
+            modelBuilder.Entity<Shkolla>()
+                .HasMany(s => s.Nxenesit)
+                .WithOne(n => n.Shkolla)
+                .HasForeignKey(n => n.ID_Shkolla)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

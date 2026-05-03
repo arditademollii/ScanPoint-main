@@ -7,7 +7,8 @@ import { AuthProvider } from "./context/AuthContext";
 import InvoicesPage from "./pages/InvoicesPage";
 
 // ============================================================
-// LAZY IMPORTS — code splitting automatik për çdo faqe
+// LAZY IMPORTS — çdo faqe ngarkohet vetëm kur vizitohet
+// (code splitting = aplikacioni hapet më shpejt fillimisht)
 // ============================================================
 
 // Auth
@@ -27,8 +28,6 @@ const CashiersTable         = lazy(() => import("./pages/Tables/CashiersTable"))
 const ManagersTable         = lazy(() => import("./pages/Tables/ManagersTable"));
 const ProductsInStockA      = lazy(() => import("./pages/Tables/ProductsInStockA"));
 const ProductsOutOfStock    = lazy(() => import("./pages/Tables/ProductsOutOfStockTable"));
-
-
 const PosTerminal           = lazy(() => import("./pages/Tables/PosTerminal"));
 const CashiersA             = lazy(() => import("./pages/Tables/CashiersA"));
 
@@ -37,11 +36,10 @@ const FormElements1 = lazy(() => import("./pages/Forms/FormElements"));
 const FormElements2 = lazy(() => import("./pages/Forms/Add-Products"));
 
 // Other
-const UserProfiles      = lazy(() => import("./pages/UserProfiles"));
-const Calendar          = lazy(() => import("./pages/Calendar"));
-
+const UserProfiles       = lazy(() => import("./pages/UserProfiles"));
+const Calendar           = lazy(() => import("./pages/Calendar"));
 const InvoiceSummaryPage = lazy(() => import("./pages/InvoiceSummaryPage"));
-const NotFound          = lazy(() => import("./pages/OtherPage/NotFound"));
+const NotFound           = lazy(() => import("./pages/OtherPage/NotFound"));
 
 // Charts
 const LineChart = lazy(() => import("./pages/Charts/LineChart"));
@@ -56,7 +54,14 @@ const Images  = lazy(() => import("./pages/UiElements/Images"));
 const Videos  = lazy(() => import("./pages/UiElements/Videos"));
 
 // ============================================================
-// LOADING FALLBACK
+// FAQET E REJA — Shkolla & Nxënës (Provimi)
+// I importojmë lazy ashtu si çdo faqe tjetër në projekt
+// ============================================================
+const ShkollaPage = lazy(() => import("./pages/ShkollaPage"));
+const NxenesiPage = lazy(() => import("./pages/NxenesiPage"));
+
+// ============================================================
+// LOADING FALLBACK — shfaqet ndërkohë që faqja po ngarkohet
 // ============================================================
 function PageLoader() {
   return (
@@ -67,7 +72,10 @@ function PageLoader() {
 }
 
 // ============================================================
-// APP
+// APP — komponenti rrënjë
+// AuthProvider → mbështjell gjithçka për qasje te useAuth()
+// Router       → menaxhon URL-në e browser-it
+// Suspense     → tregon PageLoader derisa faqja lazy të ngarkohet
 // ============================================================
 export default function App() {
   return (
@@ -78,54 +86,53 @@ export default function App() {
           <Routes>
 
             {/* ================================================
-                RRUGËT PUBLIKE — pa autentifikim
+                RRUGËT PUBLIKE — nuk kërkohet login
+                Çdo vizitor mund t'i hapë këto URL
             ================================================ */}
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
 
             {/* ================================================
                 RRUGËT E MBROJTURA — kërkohet login
+                ProtectedRoute pa role = çdo user i loguar
+                ProtectedRoute me allowedRoles = vetëm ato role
             ================================================ */}
             <Route element={<ProtectedRoute />}>
               <Route element={<AppLayout />}>
 
-                {/* Root → ridrejto te dashboard */}
+                {/* Root → ridrejto te dashboard-i kryesor */}
                 <Route index element={<Navigate to="/dashboard/home" replace />} />
 
-                {/* --- Dashboard --- */}
+                {/* --- Dashboard sipas rolit --- */}
 
-                {/* Admin only */}
+                {/* Vetëm Admin */}
                 <Route element={<ProtectedRoute allowedRoles={["admin"]} />}>
                   <Route path="/dashboard/home" element={<Home />} />
                 </Route>
 
-                {/* Cashier only */}
+                {/* Vetëm Cashier */}
                 <Route element={<ProtectedRoute allowedRoles={["cashier"]} />}>
                   <Route path="/dashboard/userhome" element={<PosTerminal />} />
-                  
                 </Route>
 
-                {/* Manager only */}
+                {/* Vetëm Manager */}
                 <Route element={<ProtectedRoute allowedRoles={["manager"]} />}>
                   <Route path="/dashboard/moderatorhome" element={<ProductsInStockA />} />
                 </Route>
 
                 {/* --- Faqe të përbashkëta (të gjitha rolet) --- */}
-                
-                <Route path="/profile"          element={<UserProfiles />} />
-                <Route path="/calendar"         element={<Calendar />} />
-                <Route path="/invoices"         element={<InvoicesPage />} />
-                <Route path="/invoice-summary"  element={<InvoiceSummaryPage />} />
+                <Route path="/profile"         element={<UserProfiles />} />
+                <Route path="/calendar"        element={<Calendar />} />
+                <Route path="/invoices"        element={<InvoicesPage />} />
+                <Route path="/invoice-summary" element={<InvoiceSummaryPage />} />
 
                 {/* --- Tabela --- */}
-                <Route path="/basic-tables1"   element={<CashiersTable />} />
-                <Route path="/basic-tables2"   element={<ManagersTable />} />
-                <Route path="/basic-tables4"   element={<ProductsOutOfStock />} />
-                
-               
-                <Route path="/basic-tables10"  element={<ProductsInStockA />} />
-                <Route path="/PosTerminal"     element={<PosTerminal />} />
-                <Route path="/CashiersA"       element={<CashiersA />} />
+                <Route path="/basic-tables1"  element={<CashiersTable />} />
+                <Route path="/basic-tables2"  element={<ManagersTable />} />
+                <Route path="/basic-tables4"  element={<ProductsOutOfStock />} />
+                <Route path="/basic-tables10" element={<ProductsInStockA />} />
+                <Route path="/PosTerminal"    element={<PosTerminal />} />
+                <Route path="/CashiersA"      element={<CashiersA />} />
 
                 {/* --- Forma --- */}
                 <Route path="/form-elements1" element={<FormElements1 />} />
@@ -143,10 +150,22 @@ export default function App() {
                 <Route path="/images"  element={<Images />} />
                 <Route path="/videos"  element={<Videos />} />
 
+                {/* ================================================
+                    RRUGËT E REJA — Shkolla & Nxënës (Provimi)
+                    Vendosura brenda AppLayout → marrin sidebar/header
+                    Vendosura brenda ProtectedRoute → kërkohet login
+
+                    URL-të:
+                      /shkollat  → ShkollaPage (lista + CRUD i shkollave)
+                      /nxenesit  → NxenesiPage (lista + CRUD + filtrim sipas shkollës)
+                ================================================ */}
+                <Route path="/shkollat" element={<ShkollaPage />} />
+                <Route path="/nxenesit" element={<NxenesiPage />} />
+
               </Route>
             </Route>
 
-            {/* 404 */}
+            {/* 404 — çdo URL tjetër */}
             <Route path="*" element={<NotFound />} />
 
           </Routes>

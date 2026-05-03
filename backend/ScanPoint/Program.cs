@@ -2,6 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ScanPoint.Repositories.Interfaces;
+using ScanPoint.Repositories.Repositories;
 using Scalar.AspNetCore;
 using ScanPoint.Models.Data;
 using ScanPoint.Models.Mappings;
@@ -17,7 +19,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 // -------------------- SERVICES --------------------
 
-builder.Services.AddControllers();
+
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.PropertyNamingPolicy = null;
+    });
 
 
 // DbContext
@@ -81,6 +88,11 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
+
+// Dependency Injection — kur Controller kërkon IShkollaRepository, jep ShkollaRepository
+// "Scoped" = krijohet një instancë për çdo request HTTP
+builder.Services.AddScoped<IShkollaRepository, ShkollaRepository>();
+builder.Services.AddScoped<INxenesiRepository, NxenesiRepository>();
 
 
 // AutoMapper
