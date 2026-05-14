@@ -29,12 +29,16 @@ function clearSession(): void {
 }
 
 // --- CAMELCASE CONVERTER ---
-// Konverton çdo response nga PascalCase (C#) në camelCase (TypeScript)
+// Konverton response nga PascalCase (C#) në camelCase (TypeScript)
+// RREGULL: Keys që fillojnë me 2+ shkronja të mëdha (p.sh. ID_Shkolla) nuk preken
 const toCamel = (obj: any): any => {
   if (Array.isArray(obj)) return obj.map(toCamel);
   if (obj !== null && typeof obj === "object") {
     return Object.keys(obj).reduce((acc, key) => {
-      const camelKey = key.charAt(0).toLowerCase() + key.slice(1);
+      // Mos konverto keys si "ID_Shkolla", "ID", etj. — ruaji siç janë
+      const camelKey = /^[A-Z]{2,}/.test(key)
+        ? key
+        : key.charAt(0).toLowerCase() + key.slice(1);
       acc[camelKey] = toCamel(obj[key]);
       return acc;
     }, {} as any);
@@ -48,7 +52,6 @@ const api: AxiosInstance = axios.create({
 });
 
 // --- REQUEST INTERCEPTOR ---
-// Shton Authorization header dhe vendos Content-Type korrekt
 api.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
     const session = getSession();
@@ -56,7 +59,6 @@ api.interceptors.request.use(
       config.headers.Authorization = `Bearer ${session.accessToken}`;
     }
 
-    // ✅ Mos vendos Content-Type për FormData — browser-i e vendos vetë me boundary
     if (!(config.data instanceof FormData)) {
       config.headers["Content-Type"] = "application/json";
     }
@@ -67,7 +69,6 @@ api.interceptors.request.use(
 );
 
 // --- RESPONSE INTERCEPTOR ---
-// ✅ Refresh token automatik me queue për requeste paralele
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (token: string) => void;
@@ -89,10 +90,6 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // Mos u provo refresh nëse:
-    // 1. Nuk është 401
-    // 2. Tashmë u provua
-    // 3. Është vetë endpoint-i i auth (shmang loop-in infinit)
     if (
       error.response?.status !== 401 ||
       originalRequest._retry ||
@@ -101,7 +98,6 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    // Nëse tashmë po refreshohet — fut në queue
     if (isRefreshing) {
       return new Promise((resolve, reject) => {
         failedQueue.push({ resolve, reject });
@@ -122,7 +118,6 @@ api.interceptors.response.use(
     }
 
     try {
-      // ✅ Refresh token rotation — backend kthen refresh token të ri
       const res = await axios.post(`${BASE_URL}/api/auth/refresh`, {
         refreshToken: session.refreshToken,
       });

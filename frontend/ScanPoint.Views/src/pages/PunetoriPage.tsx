@@ -6,34 +6,36 @@ import api from "../api/axiosInstance";
 // ID_Shkolla mbetet me kapitale — toCamel nuk e prek (fillon me 2+ shkronja të mëdha)
 // ===========================
 
-interface Nxenesi {
+interface Punetori {
   ID: number;          // Backend kthen "ID" — toCamel e ruan si "ID" (2+ shkronja të mëdha)
-  emriNxenesit: string;
-  klasa: string;
-  ID_Shkolla: number;
-  emriShkolles: string;
+  emriPunetorit: string;
+  mbiemriPunetorit: string;
+  pozita: string;
+  ID_Fabrika: number;
+  emriFabrikes: string;
 }
 
-interface Shkolla {
-  ID_Shkolla: number;
-  emriShkolles: string;
-  qyteti: string;
+interface Fabrika {
+  ID_Fabrika: number;
+  emriFabrikes: string;
+  lokacioni: string;
 }
 
 interface FormData {
-  emriNxenesit: string;
-  klasa: string;
-  ID_Shkolla: number;
+  emriPunetorit: string;
+  mbiemriPunetorit: string;
+  pozita: string
+  ID_Fabrika: number;
 }
 
-const emptyForm: FormData = { emriNxenesit: "", klasa: "", ID_Shkolla: 0 };
+const emptyForm: FormData = { emriPunetorit: "", mbiemriPunetorit: "",pozita: "", ID_Fabrika: 0 };
 
-export default function NxenesiPage() {
+export default function PunetoriPage() {
   // ===========================
   // STATE
   // ===========================
-  const [nxenesit, setNxenesit] = useState<Nxenesi[]>([]);
-  const [shkollat, setShkollat] = useState<Shkolla[]>([]);
+  const [punetoret, setPunetorit] = useState<Punetori[]>([]);
+  const [fabrikat, setFabrikat] = useState<Fabrika[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,30 +45,30 @@ export default function NxenesiPage() {
   const [submitLoading, setSubmitLoading] = useState(false);
 
   // 0 = të gjithë nxënësit
-  const [filterShkollaId, setFilterShkollaId] = useState<number>(0);
+  const [filterFabrikaId, setFilterFabrikaId] = useState<number>(0);
 
   // ===========================
   // NGARKIM I TË DHËNAVE
   // ===========================
-  const fetchShkollat = async () => {
+  const fetchFabrikat = async () => {
     try {
-      const res = await api.get("/api/Shkolla");
-      setShkollat(res.data);
+      const res = await api.get("/api/Fabrika");
+      setFabrikat(res.data);
     } catch {
       // Nuk e stopojmë faqen nëse dështon shkollat
     }
   };
 
-  const fetchNxenesit = async () => {
+  const fetchPunetoret = async () => {
     setLoading(true);
     setError(null);
     try {
       const url =
-        filterShkollaId > 0
-          ? `/api/Nxenesi/byShkolla/${filterShkollaId}`
-          : "/api/Nxenesi";
+        filterFabrikaId > 0
+          ? `/api/Punetori/byFabrika/${filterFabrikaId}`
+          : "/api/Punetori";
       const res = await api.get(url);
-      setNxenesit(res.data);
+      setPunetorit(res.data);
     } catch (err: any) {
       setError(err.response?.data?.message || "Ngarkimi dështoi");
     } finally {
@@ -75,12 +77,12 @@ export default function NxenesiPage() {
   };
 
   useEffect(() => {
-    fetchShkollat();
+    fetchFabrikat();
   }, []);
 
   useEffect(() => {
-    fetchNxenesit();
-  }, [filterShkollaId]);
+    fetchPunetoret();
+  }, [filterFabrikaId]);
 
   // ===========================
   // HAP FORMA
@@ -91,12 +93,13 @@ export default function NxenesiPage() {
     setShowForm(true);
   };
 
-  const handleOpenEdit = (n: Nxenesi) => {
+  const handleOpenEdit = (n: Punetori) => {
     setEditId(n.ID);
     setFormData({
-      emriNxenesit: n.emriNxenesit,
-      klasa: n.klasa,
-      ID_Shkolla: n.ID_Shkolla,
+      emriPunetorit: n.emriPunetorit,
+      mbiemriPunetorit: n.mbiemriPunetorit,
+      pozita: n.pozita,
+      ID_Fabrika: n.ID_Fabrika,
     });
     setShowForm(true);
   };
@@ -107,24 +110,24 @@ export default function NxenesiPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.emriNxenesit.trim() || !formData.klasa.trim()) {
-      alert("Emri dhe klasa janë të detyrueshme!");
+    if (!formData.emriPunetorit.trim() || !formData.mbiemriPunetorit.trim() || !formData.pozita.trim()) {
+      alert("Emri, Mbiemri dhe Pozita janë të detyrueshme!");
       return;
     }
-    if (formData.ID_Shkolla === 0) {
-      alert("Duhet të zgjidhni një shkollë!");
+    if (formData.ID_Fabrika === 0) {
+      alert("Duhet të zgjidhni një fabrike!");
       return;
     }
 
     setSubmitLoading(true);
     try {
       if (editId !== null) {
-        await api.put(`/api/Nxenesi/${editId}`, formData);
+        await api.put(`/api/Punetori/${editId}`, formData);
       } else {
-        await api.post("/api/Nxenesi", formData);
+        await api.post("/api/Punetori", formData);
       }
       setShowForm(false);
-      fetchNxenesit();
+      fetchPunetoret();
     } catch (err: any) {
       alert(err.response?.data?.message || "Operacioni dështoi");
     } finally {
@@ -138,8 +141,8 @@ export default function NxenesiPage() {
   const handleDelete = async (id: number) => {
     if (!confirm("A je i sigurt?")) return;
     try {
-      await api.delete(`/api/Nxenesi/${id}`);
-      fetchNxenesit();
+      await api.delete(`/api/Punetori/${id}`);
+      fetchPunetoret();
     } catch (err: any) {
       alert(err.response?.data?.message || "Fshirja dështoi");
     }
@@ -150,26 +153,26 @@ export default function NxenesiPage() {
   // ===========================
   return (
     <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
-      <h1>👨‍🎓 Menaxhimi i Nxënësve</h1>
+      <h1>👨‍🎓 Menaxhimi i Punetoreve</h1>
 
       <button onClick={handleOpenAdd} style={styles.btnAdd}>
-        + Shto Nxënës të Ri
+        + Shto Punetore të Ri
       </button>
 
       {/* FILTRI */}
       <div style={styles.filterBox}>
         <label style={{ marginRight: "10px", fontWeight: "bold" }}>
-          🔍 Filtro sipas shkollës:
+          🔍 Filtro sipas fabrikes:
         </label>
         <select
-          value={filterShkollaId}
-          onChange={(e) => setFilterShkollaId(Number(e.target.value))}
+          value={filterFabrikaId}
+          onChange={(e) => setFilterFabrikaId(Number(e.target.value))}
           style={styles.select}
         >
-          <option value={0}>— Të gjitha shkollat —</option>
-          {shkollat.map((s) => (
-            <option key={s.ID_Shkolla} value={s.ID_Shkolla}>
-              {s.emriShkolles} ({s.qyteti})
+          <option value={0}>— Të gjitha fabrikat —</option>
+          {fabrikat.map((f) => (
+            <option key={f.ID_Fabrika} value={f.ID_Fabrika}>
+              {f.emriFabrikes} ({f.lokacioni})
             </option>
           ))}
         </select>
@@ -184,9 +187,9 @@ export default function NxenesiPage() {
               <label>Emri i Nxënësit:</label>
               <input
                 type="text"
-                value={formData.emriNxenesit}
+                value={formData.emriPunetorit}
                 onChange={(e) =>
-                  setFormData({ ...formData, emriNxenesit: e.target.value })
+                  setFormData({ ...formData, emriPunetorit: e.target.value })
                 }
                 placeholder="p.sh. Artan Krasniqi"
                 style={styles.input}
@@ -195,33 +198,47 @@ export default function NxenesiPage() {
             </div>
 
             <div style={styles.formGroup}>
-              <label>Klasa:</label>
+              <label>Mbiemri:</label>
               <input
                 type="text"
-                value={formData.klasa}
+                value={formData.mbiemriPunetorit}
                 onChange={(e) =>
-                  setFormData({ ...formData, klasa: e.target.value })
+                  setFormData({ ...formData, mbiemriPunetorit: e.target.value })
                 }
                 placeholder="p.sh. 10A"
                 style={styles.input}
                 required
               />
             </div>
+            
+            <div style={styles.formGroup}>
+              <label>Pozita:</label>
+              <input
+                type="text"
+                value={formData.pozita}
+                onChange={(e) =>
+                  setFormData({ ...formData, pozita: e.target.value })
+                }
+                placeholder="p.sh. IT"
+                style={styles.input}
+                required
+              />
+            </div>
 
             <div style={styles.formGroup}>
-              <label>Shkolla:</label>
+              <label>Fabrika:</label>
               <select
-                value={formData.ID_Shkolla}
+                value={formData.ID_Fabrika}
                 onChange={(e) =>
-                  setFormData({ ...formData, ID_Shkolla: Number(e.target.value) })
+                  setFormData({ ...formData, ID_Fabrika: Number(e.target.value) })
                 }
                 style={styles.select}
                 required
               >
                 <option value={0}>— Zgjedh Shkollën —</option>
-                {shkollat.map((s) => (
-                  <option key={s.ID_Shkolla} value={s.ID_Shkolla}>
-                    {s.emriShkolles} — {s.qyteti}
+                {fabrikat.map((s) => (
+                  <option key={s.ID_Fabrika} value={s.ID_Fabrika}>
+                    {s.emriFabrikes} — {s.lokacioni}
                   </option>
                 ))}
               </select>
@@ -249,32 +266,34 @@ export default function NxenesiPage() {
       {!loading && !error && (
         <>
           <p style={{ color: "#666" }}>
-            Gjithsej: <strong>{nxenesit.length}</strong> nxënës
+            Gjithsej: <strong>{punetoret.length}</strong> punetore
           </p>
           <table style={styles.table}>
             <thead>
               <tr style={styles.tableHeader}>
                 <th style={styles.th}>ID</th>
-                <th style={styles.th}>Emri i Nxënësit</th>
-                <th style={styles.th}>Klasa</th>
-                <th style={styles.th}>Shkolla</th>
+                <th style={styles.th}>Emri i Punetorit</th>
+                <th style={styles.th}>Mbiemri i punetorit</th>
+                <th style={styles.th}>Pozita i punetorit</th>
+                <th style={styles.th}>Fabrika</th>
                 <th style={styles.th}>Veprimet</th>
               </tr>
             </thead>
             <tbody>
-              {nxenesit.length === 0 ? (
+              {punetoret.length === 0 ? (
                 <tr>
                   <td colSpan={5} style={{ textAlign: "center", padding: "20px" }}>
-                    Nuk ka nxënës të regjistruar
+                    Nuk ka Punetor të regjistruar
                   </td>
                 </tr>
               ) : (
-                nxenesit.map((n) => (
+                punetoret.map((n) => (
                   <tr key={n.ID} style={styles.tableRow}>
                     <td style={styles.td}>{n.ID}</td>
-                    <td style={styles.td}>{n.emriNxenesit}</td>
-                    <td style={styles.td}>{n.klasa}</td>
-                    <td style={styles.td}>{n.emriShkolles}</td>
+                    <td style={styles.td}>{n.emriPunetorit}</td>
+                    <td style={styles.td}>{n.mbiemriPunetorit}</td>
+                    <td style={styles.td}>{n.pozita}</td>
+                    <td style={styles.td}>{n.emriFabrikes}</td>
                     <td style={styles.td}>
                       <button onClick={() => handleOpenEdit(n)} style={styles.btnEdit}>
                         ✏️ Edito

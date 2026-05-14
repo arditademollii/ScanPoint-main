@@ -6,8 +6,7 @@ namespace ScanPoint.Models.Data
 {
     public class ScanPointDbContext : DbContext
     {
-        public ScanPointDbContext(DbContextOptions<ScanPointDbContext> options)
-            : base(options)
+        public ScanPointDbContext(DbContextOptions<ScanPointDbContext> options)  : base(options)
         {
         }
 
@@ -21,9 +20,15 @@ namespace ScanPoint.Models.Data
         public DbSet<Product> Products { get; set; }
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
-
+        ///===================================================== kjo krijon tabelen( e detyryshme per cdo entitet)
         public DbSet<Shkolla> Shkollat { get; set; }
         public DbSet<Nxenesi> Nxenesit { get; set; }
+
+
+        public DbSet<Punetori> Punetoret { get; set; }
+
+        public DbSet<Fabrika> Fabrikat { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -179,15 +184,57 @@ namespace ScanPoint.Models.Data
 
             modelBuilder.Entity<InvoiceItem>()
                 .HasIndex(ii => ii.ProductId);
-
+            //==============================================================================
             // ===============================
             // SHKOLLA - NXENESI RELATION
             // ===============================
             modelBuilder.Entity<Shkolla>()
-                .HasMany(s => s.Nxenesit)
-                .WithOne(n => n.Shkolla)
-                .HasForeignKey(n => n.ID_Shkolla)
-                .OnDelete(DeleteBehavior.Cascade);
+                .HasMany(s => s.Nxenesit)  //nje shkolle ka shume nxenes    s per shkollen dhe n per nxenesin
+                .WithOne(n => n.Shkolla)    // Çdo nxënës ka vetëm NJË shkollë.
+                .HasForeignKey(n => n.ID_Shkolla)   //Foreign Key është ID_Shkolla
+                .OnDelete(DeleteBehavior.Cascade);  ///Nëse fshihet shkolla, fshihen automatikisht edhe nxënësit e saj.
+
+            modelBuilder.Entity<Fabrika>()
+               .HasMany(f => f.Punetoret)  //nje shkolle ka shume nxenes    s per shkollen dhe n per nxenesin
+               .WithOne(p => p.Fabrika)    // Çdo nxënës ka vetëm NJË shkollë.
+               .HasForeignKey(p => p.ID_Fabrika)   //Foreign Key është ID_Shkolla
+               .OnDelete(DeleteBehavior.Cascade);  
+
+
+            /*
+             
+             * kodi per 1me1
+             modelBuilder.Entity<Personi>()
+            .HasOne(p => p.Pasaporta)
+            .WithOne(pa => pa.Personi)
+            .HasForeignKey<Pasaporta>(pa => pa.PersoniID)
+            .OnDelete(DeleteBehavior.Cascade);
+
+
+            * kodi per NmeN
+            modelBuilder.Entity<Studenti>()
+            .HasMany(s => s.Lendet)
+            .WithMany(l => l.Studentet);
+
+
+
+            ============nese per NmeN e shtojme tabelen ndermjetesuese ne menyre manuale behet keshtu:
+
+            Tabela ndërmjetëse manuale
+                public class StudentiLenda
+                {
+                    public int StudentiID { get; set; }
+                    public Studenti Studenti { get; set; } = null!;
+
+                    public int LendaID { get; set; }
+                    public Lenda Lenda { get; set; } = null!;
+                }
+
+
+            Atëherë Fluent API bëhet:
+                modelBuilder.Entity<StudentiLenda>()
+                    .HasKey(sl => new { sl.StudentiID, sl.LendaID });
+             */
         }
     }
 }

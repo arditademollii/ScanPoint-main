@@ -21,7 +21,7 @@ namespace ScanPoint.Repositories.Repositories
             _context = context;
         }
 
-        // GET ALL — merr të gjitha shkollat me nxënësit e tyre
+        // ------------------- GET ALL — merr të gjitha shkollat me nxënësit e tyre
         public async Task<List<Shkolla>> GetAllAsync()
         {
             return await _context.Shkollat
@@ -29,7 +29,7 @@ namespace ScanPoint.Repositories.Repositories
                 .ToListAsync();
         }
 
-        // GET BY ID — merr një shkollë specifike
+        // ------------------- GET BY ID — merr një shkollë specifike
         public async Task<Shkolla?> GetByIdAsync(int id)
         {
             return await _context.Shkollat

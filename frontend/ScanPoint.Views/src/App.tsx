@@ -6,6 +6,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import { AuthProvider } from "./context/AuthContext";
 import InvoicesPage from "./pages/InvoicesPage";
 
+
 // ============================================================
 // LAZY IMPORTS — çdo faqe ngarkohet vetëm kur vizitohet
 // (code splitting = aplikacioni hapet më shpejt fillimisht)
@@ -56,10 +57,12 @@ const Videos  = lazy(() => import("./pages/UiElements/Videos"));
 // ============================================================
 // FAQET E REJA — Shkolla & Nxënës (Provimi)
 // I importojmë lazy ashtu si çdo faqe tjetër në projekt
-// ============================================================
+// ==================================================================================================================================================================
 const ShkollaPage = lazy(() => import("./pages/ShkollaPage"));
 const NxenesiPage = lazy(() => import("./pages/NxenesiPage"));
 
+const FabrikaPage = lazy(() => import("./pages/FabrikaPage"));
+const PunetoriPage = lazy(() => import("./pages/PunetoriPage"));
 // ============================================================
 // LOADING FALLBACK — shfaqet ndërkohë që faqja po ngarkohet
 // ============================================================
@@ -158,10 +161,12 @@ export default function App() {
                     URL-të:
                       /shkollat  → ShkollaPage (lista + CRUD i shkollave)
                       /nxenesit  → NxenesiPage (lista + CRUD + filtrim sipas shkollës)
-                ================================================ */}
+                ================================================ =============================================================================================*/}
                 <Route path="/shkollat" element={<ShkollaPage />} />
                 <Route path="/nxenesit" element={<NxenesiPage />} />
 
+                <Route path="/fabrikat" element={<FabrikaPage />} />
+                <Route path="/punetoret" element={<PunetoriPage />} />
               </Route>
             </Route>
 

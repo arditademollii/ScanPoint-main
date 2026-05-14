@@ -27,7 +27,8 @@ namespace ScanPoint.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            var shkollat = await _shkollaRepo.GetAllAsync();
+            var shkollat = await _shkollaRepo.
+                GetAllAsync();
 
             // Mapim: Shkolla → ShkollaReadDto (nuk i kthejmë të gjitha fushat)
             var result = shkollat.Select(s => new ShkollaReadDto

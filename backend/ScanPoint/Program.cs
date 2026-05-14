@@ -88,13 +88,14 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
-
-// Dependency Injection — kur Controller kërkon IShkollaRepository, jep ShkollaRepository
+//                                          ketu ki me shtu
+// ----------------------------====================================================-Dependency Injection — kur Controller kërkon IShkollaRepository, jep ShkollaRepository
 // "Scoped" = krijohet një instancë për çdo request HTTP
 builder.Services.AddScoped<IShkollaRepository, ShkollaRepository>();
 builder.Services.AddScoped<INxenesiRepository, NxenesiRepository>();
 
-
+builder.Services.AddScoped<IFabrikaRepository, FabrikaRepository>();
+builder.Services.AddScoped<IPunetoriRepository, PunetoriRepository>();
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(ManagerProfile).Assembly);
 

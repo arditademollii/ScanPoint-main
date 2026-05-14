@@ -6,7 +6,7 @@ namespace ScanPoint.Repositories.Interfaces
     // Implementimi real ndodh në ShkollaRepository.cs
     public interface IShkollaRepository
     {
-        Task<List<Shkolla>> GetAllAsync();           // Merr të gjitha shkollat
+        Task<List<Shkolla>> GetAllAsync();           // Merr të gjitha shkollat  shumes prandaj liste
         Task<Shkolla?> GetByIdAsync(int id);         // Merr shkollën me ID
         Task<Shkolla> CreateAsync(Shkolla shkolla);  // Shto shkollë të re
         Task UpdateAsync(Shkolla shkolla);            // Përditëso shkollën

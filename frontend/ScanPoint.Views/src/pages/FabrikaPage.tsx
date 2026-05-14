@@ -2,21 +2,21 @@ import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 
 // ID_Shkolla mbetet me kapitale — toCamel nuk e prek (fillon me 2+ shkronja të mëdha)
-interface Shkolla {
-  ID_Shkolla: number;
-  emriShkolles: string;
-  qyteti: string;
+interface Fabrika {
+  ID_Fabrika: number;
+  emriFabrikes: string;
+  lokacioni: string;
 }
 
 interface FormData {
-  emriShkolles: string;
-  qyteti: string;
+  emriFabrikes: string;
+  lokacioni: string;
 }
 
-const emptyForm: FormData = { emriShkolles: "", qyteti: "" };
+const emptyForm: FormData = { emriFabrikes: "", lokacioni: "" };
 
-export default function ShkollaPage() {
-  const [shkollat, setShkollat] = useState<Shkolla[]>([]);
+export default function FabrikaPage() {
+  const [fabrikat, setFabrikat] = useState<Fabrika[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,12 +25,12 @@ export default function ShkollaPage() {
   const [formData, setFormData] = useState<FormData>(emptyForm);
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const fetchShkollat = async () => {
+  const fetchFabrikat = async () => {
     setLoading(true);
     setError(null);
     try {
-      const res = await api.get("/api/Shkolla");
-      setShkollat(res.data);
+      const res = await api.get("/api/Fabrika");
+      setFabrikat(res.data);
     } catch (err: any) {
       setError(err.response?.data?.message || "Ngarkimi dështoi");
     } finally {
@@ -39,7 +39,7 @@ export default function ShkollaPage() {
   };
 
   useEffect(() => {
-    fetchShkollat();
+    fetchFabrikat();
   }, []);
 
   const handleOpenAdd = () => {
@@ -48,16 +48,16 @@ export default function ShkollaPage() {
     setShowForm(true);
   };
 
-  const handleOpenEdit = (s: Shkolla) => {
-    setEditId(s.ID_Shkolla);
-    setFormData({ emriShkolles: s.emriShkolles, qyteti: s.qyteti });
+  const handleOpenEdit = (s: Fabrika) => {
+    setEditId(s.ID_Fabrika);
+    setFormData({ emriFabrikes: s.emriFabrikes, lokacioni: s.lokacioni });
     setShowForm(true);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.emriShkolles.trim() || !formData.qyteti.trim()) {
+    if (!formData.emriFabrikes.trim() || !formData.lokacioni.trim()) {
       alert("Të gjitha fushat janë të detyrueshme!");
       return;
     }
@@ -65,12 +65,12 @@ export default function ShkollaPage() {
     setSubmitLoading(true);
     try {
       if (editId !== null) {
-        await api.put(`/api/Shkolla/${editId}`, formData);
+        await api.put(`/api/Fabrika/${editId}`, formData);
       } else {
-        await api.post("/api/Shkolla", formData);
+        await api.post("/api/Fabrika", formData);
       }
       setShowForm(false);
-      fetchShkollat();
+      fetchFabrikat();
     } catch (err: any) {
       alert(err.response?.data?.message || "Operacioni dështoi");
     } finally {
@@ -79,10 +79,10 @@ export default function ShkollaPage() {
   };
 
   const handleDelete = async (id: number) => {
-    if (!confirm("A je i sigurt që dëshiron të fshish këtë shkollë?")) return;
+    if (!confirm("A je i sigurt që dëshiron të fshish këtë fabrikeë?")) return;
     try {
-      await api.delete(`/api/Shkolla/${id}`);
-      fetchShkollat();
+      await api.delete(`/api/Fabrika/${id}`);
+      fetchFabrikat();
     } catch (err: any) {
       alert(err.response?.data?.message || "Fshirja dështoi");
     }
@@ -90,25 +90,25 @@ export default function ShkollaPage() {
 
   return (
     <div style={{ padding: "20px", maxWidth: "900px", margin: "0 auto" }}>
-      <h1>🏫 Menaxhimi i Shkollave</h1>
+      <h1>🏫 Menaxhimi i Fabrikave</h1>
 
       <button onClick={handleOpenAdd} style={styles.btnAdd}>
-        + Shto Shkollë të Re
+        + Shto Fabrikë të Re
       </button>
 
       {showForm && (
         <div style={styles.formBox}>
-          <h3>{editId ? "✏️ Edito Shkollën" : "➕ Shto Shkollë të Re"}</h3>
+          <h3>{editId ? "✏️ Edito Fabrikën" : "➕ Shto Fabrikeë të Re"}</h3>
           <form onSubmit={handleSubmit}>
             <div style={styles.formGroup}>
-              <label>Emri i Shkollës:</label>
+              <label>Emri i Fabrikës:</label>
               <input
                 type="text"
-                value={formData.emriShkolles}
+                value={formData.emriFabrikes}
                 onChange={(e) =>
-                  setFormData({ ...formData, emriShkolles: e.target.value })
+                  setFormData({ ...formData, emriFabrikes: e.target.value })
                 }
-                placeholder="p.sh. Shkolla 'Eqrem Çabej'"
+                placeholder="p.sh. Fabrika 'Eqrem Çabej'"
                 style={styles.input}
                 required
               />
@@ -117,9 +117,9 @@ export default function ShkollaPage() {
               <label>Qyteti:</label>
               <input
                 type="text"
-                value={formData.qyteti}
+                value={formData.lokacioni}
                 onChange={(e) =>
-                  setFormData({ ...formData, qyteti: e.target.value })
+                  setFormData({ ...formData, lokacioni: e.target.value })
                 }
                 placeholder="p.sh. Prishtinë"
                 style={styles.input}
@@ -150,30 +150,30 @@ export default function ShkollaPage() {
           <thead>
             <tr style={styles.tableHeader}>
               <th style={styles.th}>ID</th>
-              <th style={styles.th}>Emri i Shkollës</th>
+              <th style={styles.th}>Emri i Fabrikës</th>
               <th style={styles.th}>Qyteti</th>
               <th style={styles.th}>Veprimet</th>
             </tr>
           </thead>
           <tbody>
-            {shkollat.length === 0 ? (
+            {fabrikat.length === 0 ? (
               <tr>
                 <td colSpan={4} style={{ textAlign: "center", padding: "20px" }}>
-                  Nuk ka shkolla të regjistruara
+                  Nuk ka fabrika të regjistruara
                 </td>
               </tr>
             ) : (
-              shkollat.map((s) => (
-                <tr key={s.ID_Shkolla} style={styles.tableRow}>
-                  <td style={styles.td}>{s.ID_Shkolla}</td>
-                  <td style={styles.td}>{s.emriShkolles}</td>
-                  <td style={styles.td}>{s.qyteti}</td>
+              fabrikat.map((s) => (
+                <tr key={s.ID_Fabrika} style={styles.tableRow}>
+                  <td style={styles.td}>{s.ID_Fabrika}</td>
+                  <td style={styles.td}>{s.emriFabrikes}</td>
+                  <td style={styles.td}>{s.lokacioni}</td>
                   <td style={styles.td}>
                     <button onClick={() => handleOpenEdit(s)} style={styles.btnEdit}>
                       ✏️ Edito
                     </button>
                     <button
-                      onClick={() => handleDelete(s.ID_Shkolla)}
+                      onClick={() => handleDelete(s.ID_Fabrika)}
                       style={styles.btnDelete}
                     >
                       🗑️ Fshi

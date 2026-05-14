@@ -114,12 +114,22 @@ const AppSidebar: React.FC = () => {
             { name: "Invoices total amount", path: "/invoice-summary" },
           ],
         },
+        // kjo pjese
         {
           name: "Provimi",
           icon: <TableIcon />,
           subItems: [
             { name: "Shkollat", path: "/shkollat" },
 { name: "Nxënësit", path: "/nxenesit" },
+          ],
+        },
+        //kjo pjese
+        {
+          name: "Provimi2",
+          icon: <TableIcon />,
+          subItems: [
+            { name: "Fabrikat", path: "/fabrikat" },
+{ name: "Punetoret", path: "/punetoret" },
           ],
         },
       ];

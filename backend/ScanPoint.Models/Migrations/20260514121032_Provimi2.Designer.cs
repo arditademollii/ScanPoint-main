@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScanPoint.Models.Data;
 
@@ -11,9 +12,11 @@ using ScanPoint.Models.Data;
 namespace ScanPoint.Models.Migrations
 {
     [DbContext(typeof(ScanPointDbContext))]
-    partial class ScanPointDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260514121032_Provimi2")]
+    partial class Provimi2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -199,7 +202,7 @@ namespace ScanPoint.Models.Migrations
                     b.Property<int>("ID_Fabrika")
                         .HasColumnType("int");
 
-                    b.Property<string>("MbiemriPunetorit")
+                    b.Property<string>("MbriemriPunetorit")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
