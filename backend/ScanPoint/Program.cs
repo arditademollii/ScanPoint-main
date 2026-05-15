@@ -96,6 +96,19 @@ builder.Services.AddScoped<INxenesiRepository, NxenesiRepository>();
 
 builder.Services.AddScoped<IFabrikaRepository, FabrikaRepository>();
 builder.Services.AddScoped<IPunetoriRepository, PunetoriRepository>();
+
+builder.Services.AddScoped<ILigjeruesiRepository, LigjeruesiRepository>();
+builder.Services.AddScoped<ILigjerataRepository, LigjeratatRepository>();
+
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IContractRepository, ContractRepository>();
+
+builder.Services.AddScoped<ITeamRepository, TeamRepository>();
+builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
+
+
+builder.Services.AddScoped<IUniversitetiRepository, UniversitetiRepository>();
+builder.Services.AddScoped<IProfesoriRepository, ProfesoriRepository>();
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(ManagerProfile).Assembly);
 

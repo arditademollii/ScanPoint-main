@@ -30,6 +30,24 @@ namespace ScanPoint.Models.Data
         public DbSet<Fabrika> Fabrikat { get; set; }
 
 
+
+        public DbSet<Ligjeruesi> Ligjeruesit { get; set; }
+
+        public DbSet<Ligjerata> Ligjeratat { get; set; }
+
+        public DbSet<Employee> Employees { get; set; }
+
+        public DbSet<Contract> Contracts { get; set; }
+
+        public DbSet<Team232470351> Teams232470351 { get; set; }
+
+        public DbSet<Player232470351> Players232470351 { get; set; }
+
+        public DbSet<Universiteti> Universitetet { get; set; }
+
+        public DbSet<Profesori> Profesoret { get; set; }
+
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
@@ -198,9 +216,34 @@ namespace ScanPoint.Models.Data
                .HasMany(f => f.Punetoret)  //nje shkolle ka shume nxenes    s per shkollen dhe n per nxenesin
                .WithOne(p => p.Fabrika)    // Çdo nxënës ka vetëm NJË shkollë.
                .HasForeignKey(p => p.ID_Fabrika)   //Foreign Key është ID_Shkolla
-               .OnDelete(DeleteBehavior.Cascade);  
+               .OnDelete(DeleteBehavior.Cascade);
+            
+
+            modelBuilder.Entity<Ligjeruesi>()
+              .HasMany(l => l.Ligjeratat)  //nje ligjerues ka shume ligjerata    l per ligjeruesin dhe g per ligjeraten
+              .WithOne(g => g.Ligjeruesi)    // Çdo ligjerate ka vetëm NJË ligjerues.
+              .HasForeignKey(g => g.ID_Ligjeruesi)   //Foreign Key është ID_Ligjeruesi
+              .OnDelete(DeleteBehavior.Cascade);
 
 
+
+            modelBuilder.Entity<Employee>()
+            .HasMany(c => c.Contracts)  //nje ligjerues ka shume ligjerata    l per ligjeruesin dhe g per ligjeraten
+            .WithOne(e => e.Employee)    // Çdo ligjerate ka vetëm NJË ligjerues.
+            .HasForeignKey(e => e.ID_Employee)   //Foreign Key është ID_Ligjeruesi
+            .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Team232470351>()
+          .HasMany(c => c.Players232470351)  //nje ligjerues ka shume ligjerata    l per ligjeruesin dhe g per ligjeraten
+          .WithOne(e => e.Team232470351)    // Çdo ligjerate ka vetëm NJË ligjerues.
+          .HasForeignKey(e => e.ID_Team232470351)   //Foreign Key është ID_Ligjeruesi
+          .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Universiteti>()
+        .HasMany(c => c.Profesoret)  //nje universitet ka shume profesore    u per universitetin dhe p per profesorin
+        .WithOne(e => e.Universiteti)    // Çdo profesor ka vetëm NJË universitet.
+        .HasForeignKey(e => e.ID_Universiteti)   //Foreign Key është ID_Universiteti
+        .OnDelete(DeleteBehavior.Cascade);
             /*
              
              * kodi per 1me1

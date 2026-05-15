@@ -123,6 +123,16 @@ const AppSidebar: React.FC = () => {
 { name: "Nxënësit", path: "/nxenesit" },
           ],
         },
+     
+      // kjo pjese
+      {
+        name: "Provimi3",
+        icon: <TableIcon />,
+        subItems: [
+          { name: "Ligjeruesit", path: "/ligjeruesit" },
+{ name: "Ligjeratat", path: "/ligjeratat" },
+        ],
+      },
         //kjo pjese
         {
           name: "Provimi2",
@@ -132,6 +142,33 @@ const AppSidebar: React.FC = () => {
 { name: "Punetoret", path: "/punetoret" },
           ],
         },
+
+        {
+          name: "Provimi5",
+          icon: <TableIcon />,
+          subItems: [
+            { name: "Employee", path: "/employee" },
+{ name: "Contract", path: "/Contract" },
+          ],
+        },
+
+        {
+          name: "Provimi6",
+          icon: <TableIcon />,
+          subItems: [
+            { name: "Team", path: "/team" },
+  { name: "Player", path: "/palyer" },
+          ],
+        },
+        {
+          name: "ProvimiCH1",
+          icon: <TableIcon />,
+          subItems: [
+            { name: "Universiteti", path: "/universiteti" },
+  { name: "Profesori", path: "/profesori" },
+          ],
+        },
+
       ];
     } else {
       return [];

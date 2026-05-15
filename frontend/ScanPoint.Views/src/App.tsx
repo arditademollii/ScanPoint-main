@@ -63,6 +63,18 @@ const NxenesiPage = lazy(() => import("./pages/NxenesiPage"));
 
 const FabrikaPage = lazy(() => import("./pages/FabrikaPage"));
 const PunetoriPage = lazy(() => import("./pages/PunetoriPage"));
+
+const LigjeruesiPage = lazy(() => import("./pages/LigjeruesiPage"));
+const LigjerataPage = lazy(() => import("./pages/LigjerataPage"));
+
+const EmployeePage = lazy(() => import("./pages/EmployeePage"));
+const ContractPage = lazy(() => import("./pages/ContractPage"));
+
+const TeamPage = lazy(() => import("./pages/TeamPage"));
+const PlayerPage = lazy(() => import("./pages/PlayerPage"));
+
+const UniversitetiPage = lazy(() => import("./pages/UniversitetiPage"));
+const ProfesoriPage = lazy(() => import("./pages/ProfesoriPage"));
 // ============================================================
 // LOADING FALLBACK — shfaqet ndërkohë që faqja po ngarkohet
 // ============================================================
@@ -167,6 +179,17 @@ export default function App() {
 
                 <Route path="/fabrikat" element={<FabrikaPage />} />
                 <Route path="/punetoret" element={<PunetoriPage />} />
+
+                <Route path="/ligjeruesit" element={<LigjeruesiPage />} />
+                <Route path="/ligjeratat" element={<LigjerataPage />} />
+                <Route path="/employee" element={<EmployeePage />} />
+                <Route path="/contract" element={<ContractPage />} />
+
+                <Route path="/team" element={<TeamPage />} />
+                <Route path="/palyer" element={<PlayerPage />} />
+
+                <Route path="/universiteti" element={<UniversitetiPage />} />
+                <Route path="/profesori" element={<ProfesoriPage />} />
               </Route>
             </Route>
 
