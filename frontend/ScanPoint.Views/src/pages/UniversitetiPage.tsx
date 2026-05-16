@@ -101,7 +101,7 @@ export default function UniversitetiPage() {
           <h3>{editId ? "✏️ Edito univeristetin" : "➕ Shto univeristetin e Ri"}</h3>
           <form onSubmit={handleSubmit}>
             <div style={styles.formGroup}>
-              <label>Emri i Shkollës:</label>
+              <label>Emri i Univeristeit:</label>
               <input
                 type="text"
                 value={formData.emriUniversitetit}
@@ -150,7 +150,7 @@ export default function UniversitetiPage() {
           <thead>
             <tr style={styles.tableHeader}>
               <th style={styles.th}>ID</th>
-              <th style={styles.th}>Emri i Shkollës</th>
+              <th style={styles.th}>Emri i Universiteti</th>
               <th style={styles.th}>shteti</th>
               <th style={styles.th}>Veprimet</th>
             </tr>

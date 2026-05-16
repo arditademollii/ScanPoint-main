@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScanPoint.Models.Data;
 
@@ -11,9 +12,11 @@ using ScanPoint.Models.Data;
 namespace ScanPoint.Models.Migrations
 {
     [DbContext(typeof(ScanPointDbContext))]
-    partial class ScanPointDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260515211128_AtributeNdryshe")]
+    partial class AtributeNdryshe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -262,30 +265,6 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("Nxenesit");
                 });
 
-            modelBuilder.Entity("ScanPoint.Models.Models.Planet", b =>
-                {
-                    b.Property<int>("ID_Planet")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Planet"));
-
-                    b.Property<string>("EmriPlanetit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID_Planet");
-
-                    b.ToTable("Planetet");
-                });
-
             modelBuilder.Entity("ScanPoint.Models.Models.Player232470351", b =>
                 {
                     b.Property<int>("ID")
@@ -413,31 +392,6 @@ namespace ScanPoint.Models.Migrations
                     b.HasIndex("ID_Fabrika");
 
                     b.ToTable("Punetoret");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("EmriSatelitit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ID_Planet")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ID_Planet");
-
-                    b.ToTable("Satelitet");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Shkolla", b =>
@@ -779,17 +733,6 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Fabrika");
                 });
 
-            modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
-                {
-                    b.HasOne("ScanPoint.Models.Models.Planet", "Planet")
-                        .WithMany("Satelitet")
-                        .HasForeignKey("ID_Planet")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Planet");
-                });
-
             modelBuilder.Entity("ScanPoint.Models.Models.Shop", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.User", "Admin")
@@ -863,11 +806,6 @@ namespace ScanPoint.Models.Migrations
             modelBuilder.Entity("ScanPoint.Models.Models.Ligjeruesi", b =>
                 {
                     b.Navigation("Ligjeratat");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Planet", b =>
-                {
-                    b.Navigation("Satelitet");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Product", b =>

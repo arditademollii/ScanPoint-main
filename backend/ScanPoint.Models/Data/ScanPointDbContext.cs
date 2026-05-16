@@ -47,6 +47,14 @@ namespace ScanPoint.Models.Data
 
         public DbSet<Profesori> Profesoret { get; set; }
 
+        public DbSet<Spitali> Spitalet { get; set; }
+
+        public DbSet<Mjeku> Mjeket { get; set; }
+
+        public DbSet<Planet> Planetet { get; set; }
+
+        public DbSet<Satelite> Satelitet { get; set; }
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -244,6 +252,19 @@ namespace ScanPoint.Models.Data
         .WithOne(e => e.Universiteti)    // Çdo profesor ka vetëm NJË universitet.
         .HasForeignKey(e => e.ID_Universiteti)   //Foreign Key është ID_Universiteti
         .OnDelete(DeleteBehavior.Cascade);
+
+
+            modelBuilder.Entity<Spitali>()
+       .HasMany(c => c.Mjeket)  //nje spital ka shume mjeke    s per spitalin dhe m per mjekun
+       .WithOne(e => e.Spitali)    // Çdo mjek ka vetëm NJË spital.
+       .HasForeignKey(e => e.ID_Spitali)   //Foreign Key është ID_Spitali   
+       .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Planet>()
+      .HasMany(c => c.Satelitet)  //nje planet ka shume satelite    p per planetin dhe s per sateliten
+      .WithOne(e => e.Planet)    // Çdo satelit ka vetëm NJË planet.
+      .HasForeignKey(e => e.ID_Planet)   //Foreign Key është ID_Planet   
+      .OnDelete(DeleteBehavior.Cascade);
             /*
              
              * kodi per 1me1

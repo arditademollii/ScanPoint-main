@@ -75,6 +75,12 @@ const PlayerPage = lazy(() => import("./pages/PlayerPage"));
 
 const UniversitetiPage = lazy(() => import("./pages/UniversitetiPage"));
 const ProfesoriPage = lazy(() => import("./pages/ProfesoriPage"));
+
+const SpitaliPage = lazy(() => import("./pages/SpitaliPage"));
+const MjekuPage = lazy(() => import("./pages/MjekuPage"));
+
+const PlanetPage = lazy(() => import("./pages/PlanetPage"));
+const SatelitePage = lazy(() => import("./pages/SatelitePage"));
 // ============================================================
 // LOADING FALLBACK — shfaqet ndërkohë që faqja po ngarkohet
 // ============================================================
@@ -190,6 +196,12 @@ export default function App() {
 
                 <Route path="/universiteti" element={<UniversitetiPage />} />
                 <Route path="/profesori" element={<ProfesoriPage />} />
+
+                <Route path="/spitali" element={<SpitaliPage />} />
+                <Route path="/mjeku" element={<MjekuPage />} />
+
+                <Route path="/planet" element={<PlanetPage />} />
+                <Route path="/satelite" element={<SatelitePage />} />
               </Route>
             </Route>
 

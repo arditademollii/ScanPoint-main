@@ -109,6 +109,13 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
 builder.Services.AddScoped<IUniversitetiRepository, UniversitetiRepository>();
 builder.Services.AddScoped<IProfesoriRepository, ProfesoriRepository>();
+
+builder.Services.AddScoped<ISpitaliRepository, SpitaliRepository>();
+builder.Services.AddScoped<IMjekuRepository, MjekuRepository>();
+
+
+builder.Services.AddScoped<IPlanetRepository, PlanetRepository>();
+builder.Services.AddScoped<ISateliteRepository, SateliteRepository>();
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(ManagerProfile).Assembly);
 

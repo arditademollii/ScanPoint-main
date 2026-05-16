@@ -169,6 +169,23 @@ const AppSidebar: React.FC = () => {
           ],
         },
 
+        {
+          name: "ProvimiAtribute",
+          icon: <TableIcon />,
+          subItems: [
+            { name: "Spitali", path: "/spitali" },
+  { name: "Mjeku", path: "/mjeku" },
+          ],
+        },
+        {
+          name: "ProvimiSoftDelete",
+          icon: <TableIcon />,
+          subItems: [
+            { name: "Planet", path: "/planet" },
+  { name: "Satelite", path: "/satelite" },
+          ],
+        },
+
       ];
     } else {
       return [];
