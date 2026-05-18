@@ -2,8 +2,7 @@
 
 namespace ScanPoint.Models.DTOs
 {
-    // DTO = Data Transfer Object
-    // Përdoret për të marrë të dhëna nga frontend-i kur SHTOJMË shkollë të re
+
 
     public class SpitaliCreateDto
     {
@@ -20,7 +19,7 @@ namespace ScanPoint.Models.DTOs
         public DateTime DataHapjes { get; set; }
     }
 
-    // DTO për LEXIM — kthejmë këtë te frontend-i
+  
     public class SpitaliReadDto
     {
         public int ID_Spitali { get; set; }

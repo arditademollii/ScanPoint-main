@@ -10,7 +10,7 @@ namespace ScanPoint.Controllers
     public class MjekuController : ControllerBase
     {
         private readonly IMjekuRepository _MjekuRepo;
-        private readonly ISpitaliRepository _SpitaliRepo; // Na duhet për të kontrolluar shkollën
+        private readonly ISpitaliRepository _SpitaliRepo; 
 
         public MjekuController(IMjekuRepository MjekuRepo, ISpitaliRepository SpitaliRepo)
         {
@@ -18,7 +18,7 @@ namespace ScanPoint.Controllers
             _SpitaliRepo = SpitaliRepo;
         }
 
-        // Helper — mapim Mjeku → MjekuReadDto
+      
         private static MjekuReadDto MapToDto(Mjeku n) => new MjekuReadDto
         {
             ID = n.ID,
@@ -30,10 +30,7 @@ namespace ScanPoint.Controllers
             EmriSpitalit = n.Spitali?.EmriSpitalit ?? ""
         };
 
-        // ===========================
-        // GET /api/Mjeku
-        // Merr të gjithë nxënësit
-        // ===========================
+       
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -41,10 +38,7 @@ namespace ScanPoint.Controllers
             return Ok(Mjekut.Select(MapToDto));
         }
 
-        // ===========================
-        // GET /api/Mjeku/bySpitali/{SpitaliId}
-        // Filtro nxënësit sipas shkollës — për dropdown filtrim
-        // ===========================
+      
         [HttpGet("bySpitali/{SpitaliId}")]
         public async Task<IActionResult> GetBySpitali(int SpitaliId)
         {
@@ -52,10 +46,7 @@ namespace ScanPoint.Controllers
             return Ok(Mjekut.Select(MapToDto));
         }
 
-        // ===========================
-        // GET /api/Mjeku/{id}
-        // Merr nxënësin me ID specifik
-        // ===========================
+     
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -66,18 +57,14 @@ namespace ScanPoint.Controllers
             return Ok(MapToDto(Mjeku));
         }
 
-        // ===========================
-        // POST /api/Mjeku
-        // Shto nxënës të ri
-        // Gjatë krijimit, dropdown zgjedh shkollën ekzistuese (EmriShkolles)
-        // ===========================
+      
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] MjekuCreateDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Kontrollo nëse Spitali ekziston
+            
             var Spitali = await _SpitaliRepo.GetByIdAsync(dto.ID_Spitali);
             if (Spitali == null)
                 return BadRequest(new { message = "Spitali e zgjedhur nuk ekziston." });
@@ -93,16 +80,12 @@ namespace ScanPoint.Controllers
 
             var created = await _MjekuRepo.CreateAsync(Mjeku);
 
-            // Ringarko nxënësin me shkollën për ta kthyer të plotë
+            
             var withSchool = await _MjekuRepo.GetByIdAsync(created.ID);
             return CreatedAtAction(nameof(GetById), new { id = created.ID }, MapToDto(withSchool!));
         }
 
-        // ===========================
-        // PUT /api/Mjeku/{id}
-        // Përditëso të dhënat e nxënësit
-        // Forma mbushet paraprakisht me të dhënat aktuale
-        // ===========================
+      
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] MjekuUpdateDto dto)
         {
@@ -113,12 +96,12 @@ namespace ScanPoint.Controllers
             if (Mjeku == null)
                 return NotFound(new { message = "Nxënësi nuk u gjet." });
 
-            // Kontrollo nëse Spitali e re ekziston
+          
             var Spitali = await _SpitaliRepo.GetByIdAsync(dto.ID_Spitali);
             if (Spitali == null)
                 return BadRequest(new { message = "Spitali e zgjedhur nuk ekziston." });
 
-            // Përditëso fushat
+          
             Mjeku.EmriMjekut = dto.EmriMjekut;
             Mjeku.Paga = dto.Paga;
             Mjeku.DataPunesimit = dto.DataPunesimit;
@@ -129,17 +112,14 @@ namespace ScanPoint.Controllers
             return Ok(new { message = "Mjeku u përditësua me sukses." });
         }
 
-        // ===========================
-        // DELETE /api/Mjeku/{id}
-        // Fshi mjekun nga lista
-        // ===========================
+      
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 await _MjekuRepo.DeleteAsync(id);
-                return NoContent(); // 204 — sukses
+                return NoContent(); 
             }
             catch (KeyNotFoundException ex)
             {

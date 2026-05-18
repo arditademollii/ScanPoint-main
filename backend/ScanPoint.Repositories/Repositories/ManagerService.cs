@@ -96,7 +96,7 @@ namespace ScanPoint.Repositories.Repositories
             if (shop.IsDeleted)
                 throw new ArgumentException($"Shopi '{shop.Name}' është i fshirë. Zgjidh një shop aktiv.");
 
-            // 3. Email unik globalisht
+            // 3. NumriFaqeve unik globalisht
             if (await EmailExistsGloballyAsync(dto.Email))
                 throw new ArgumentException($"Email-i '{dto.Email}' është tashmë në përdorim.");
 

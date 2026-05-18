@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScanPoint.Models.Data;
 
@@ -11,9 +12,11 @@ using ScanPoint.Models.Data;
 namespace ScanPoint.Models.Migrations
 {
     [DbContext(typeof(ScanPointDbContext))]
-    partial class ScanPointDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517104844_Prova1")]
+    partial class Prova1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,53 @@ namespace ScanPoint.Models.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Contract", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Employee")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Employee");
+
+                    b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Employee", b =>
+                {
+                    b.Property<int>("ID_Employee")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Employee"));
+
+                    b.Property<string>("EmriEmployee")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MbiemriEmployee")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Employee");
+
+                    b.ToTable("Employees");
+                });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
@@ -88,6 +138,78 @@ namespace ScanPoint.Models.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("InvoiceItems");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Kursi", b =>
+                {
+                    b.Property<int>("ID_Kursi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Kursi"));
+
+                    b.Property<string>("EmriKursit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Kohezgjatja")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pershkrimi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Kursi");
+
+                    b.ToTable("Kurset");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjerata", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("EmriLigjerates")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Ligjeruesi")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Ligjeruesi");
+
+                    b.ToTable("Ligjeratat");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjeruesi", b =>
+                {
+                    b.Property<int>("ID_Ligjeruesi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Ligjeruesi"));
+
+                    b.Property<string>("Departamenti")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmriLigjeruesit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Ligjeruesi");
+
+                    b.ToTable("Ligjeruesit");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
@@ -171,6 +293,32 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("Planetet");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Player232470351", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("EmriPlayer232470351")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Team232470351")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Number")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Team232470351");
+
+                    b.ToTable("Players232470351");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -216,6 +364,32 @@ namespace ScanPoint.Models.Migrations
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Profesori", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("EmriProfesorit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Universiteti")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Lenda")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Universiteti");
+
+                    b.ToTable("Profesoret");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
@@ -331,6 +505,74 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("Spitalet");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Studenti", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmriStudentit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Kursi")
+                        .HasColumnType("int");
+
+                    b.Property<string>("MbiemriStudentit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Kursi");
+
+                    b.ToTable("Studentet");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Team232470351", b =>
+                {
+                    b.Property<int>("ID_Team232470351")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Team232470351"));
+
+                    b.Property<string>("EmriTeam232470351")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Team232470351");
+
+                    b.ToTable("Teams232470351");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Universiteti", b =>
+                {
+                    b.Property<int>("ID_Universiteti")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Universiteti"));
+
+                    b.Property<string>("EmriUniversitetit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Shteti")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Universiteti");
+
+                    b.ToTable("Universitetet");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -418,6 +660,17 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("Managers", (string)null);
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Contract", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Employee", "Employee")
+                        .WithMany("Contracts")
+                        .HasForeignKey("ID_Employee")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Cashier", "Cashier")
@@ -456,6 +709,17 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjerata", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Ligjeruesi", "Ligjeruesi")
+                        .WithMany("Ligjeratat")
+                        .HasForeignKey("ID_Ligjeruesi")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ligjeruesi");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Spitali", "Spitali")
@@ -478,6 +742,17 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Shkolla");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Player232470351", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Team232470351", "Team232470351")
+                        .WithMany("Players232470351")
+                        .HasForeignKey("ID_Team232470351")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Team232470351");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Product", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Shop", "Shop")
@@ -487,6 +762,17 @@ namespace ScanPoint.Models.Migrations
                         .IsRequired();
 
                     b.Navigation("Shop");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Profesori", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Universiteti", "Universiteti")
+                        .WithMany("Profesoret")
+                        .HasForeignKey("ID_Universiteti")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Universiteti");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
@@ -509,6 +795,17 @@ namespace ScanPoint.Models.Migrations
                         .IsRequired();
 
                     b.Navigation("Admin");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Studenti", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Kursi", "Kursi")
+                        .WithMany("Studenti")
+                        .HasForeignKey("ID_Kursi")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Kursi");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.User", b =>
@@ -555,9 +852,24 @@ namespace ScanPoint.Models.Migrations
                         .HasForeignKey("ShopId1");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Employee", b =>
+                {
+                    b.Navigation("Contracts");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Kursi", b =>
+                {
+                    b.Navigation("Studenti");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjeruesi", b =>
+                {
+                    b.Navigation("Ligjeratat");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Planet", b =>
@@ -589,6 +901,16 @@ namespace ScanPoint.Models.Migrations
             modelBuilder.Entity("ScanPoint.Models.Models.Spitali", b =>
                 {
                     b.Navigation("Mjeket");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Team232470351", b =>
+                {
+                    b.Navigation("Players232470351");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Universiteti", b =>
+                {
+                    b.Navigation("Profesoret");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.User", b =>

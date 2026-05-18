@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 
-// ===========================
-// TIPET
-// ID_Shkolla mbetet me kapitale — toCamel nuk e prek (fillon me 2+ shkronja të mëdha)
-// ===========================
+
 
 interface Nxenesi {
-  ID: number;          // Backend kthen "ID" — toCamel e ruan si "ID" (2+ shkronja të mëdha)
+  ID: number;         
   emriNxenesit: string;
   klasa: string;
   ID_Shkolla: number;
@@ -29,9 +26,7 @@ interface FormData {
 const emptyForm: FormData = { emriNxenesit: "", klasa: "", ID_Shkolla: 0 };
 
 export default function NxenesiPage() {
-  // ===========================
-  // STATE
-  // ===========================
+
   const [nxenesit, setNxenesit] = useState<Nxenesi[]>([]);
   const [shkollat, setShkollat] = useState<Shkolla[]>([]);
   const [loading, setLoading] = useState(true);
@@ -42,18 +37,16 @@ export default function NxenesiPage() {
   const [formData, setFormData] = useState<FormData>(emptyForm);
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  // 0 = të gjithë nxënësit
+
   const [filterShkollaId, setFilterShkollaId] = useState<number>(0);
 
-  // ===========================
-  // NGARKIM I TË DHËNAVE
-  // ===========================
+ 
   const fetchShkollat = async () => {
     try {
       const res = await api.get("/api/Shkolla");
       setShkollat(res.data);
     } catch {
-      // Nuk e stopojmë faqen nëse dështon shkollat
+ 
     }
   };
 
@@ -82,9 +75,7 @@ export default function NxenesiPage() {
     fetchNxenesit();
   }, [filterShkollaId]);
 
-  // ===========================
-  // HAP FORMA
-  // ===========================
+
   const handleOpenAdd = () => {
     setEditId(null);
     setFormData(emptyForm);
@@ -101,9 +92,6 @@ export default function NxenesiPage() {
     setShowForm(true);
   };
 
-  // ===========================
-  // DORËZIMI I FORMËS
-  // ===========================
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -132,9 +120,7 @@ export default function NxenesiPage() {
     }
   };
 
-  // ===========================
-  // FSHIRJA
-  // ===========================
+
   const handleDelete = async (id: number) => {
     if (!confirm("A je i sigurt?")) return;
     try {
@@ -145,9 +131,6 @@ export default function NxenesiPage() {
     }
   };
 
-  // ===========================
-  // UI
-  // ===========================
   return (
     <div style={{ padding: "20px", maxWidth: "1000px", margin: "0 auto" }}>
       <h1>👨‍🎓 Menaxhimi i Nxënësve</h1>

@@ -15,25 +15,23 @@ namespace ScanPoint.Repositories.Repositories
             _context = context;
         }
 
-        // GET ALL — të gjithë nxënësit me emrin e shkollës
+        
         public async Task<List<Mjeku>> GetAllAsync()
         {
             return await _context.Mjeket
-                .Include(n => n.Spitali) // JOIN me tabelën Spitalit
+                .Include(n => n.Spitali) 
                 .ToListAsync();
         }
 
-        // GET BY Spitali — filtro nxënësit sipas shkollës
-        // Kjo përdoret për filterin e listës së nxënësve
+  
         public async Task<List<Mjeku>> GetBySpitaliAsync(int SpitaliId)
         {
             return await _context.Mjeket
-                .Where(n => n.ID_Spitali == SpitaliId) // Filtro me WHERE
+                .Where(n => n.ID_Spitali == SpitaliId) 
                 .Include(n => n.Spitali)
                 .ToListAsync();
         }
 
-        // GET BY ID — nxënësi me ID specifik
         public async Task<Mjeku?> GetByIdAsync(int id)
         {
             return await _context.Mjeket
@@ -41,7 +39,7 @@ namespace ScanPoint.Repositories.Repositories
                 .FirstOrDefaultAsync(n => n.ID == id);
         }
 
-        // CREATE — shto nxënës të ri
+        
         public async Task<Mjeku> CreateAsync(Mjeku Mjeku)
         {
             _context.Mjeket.Add(Mjeku);
@@ -49,14 +47,14 @@ namespace ScanPoint.Repositories.Repositories
             return Mjeku;
         }
 
-        // UPDATE — përditëso të dhënat e nxënësit
+        
         public async Task UpdateAsync(Mjeku Mjeku)
         {
             _context.Mjeket.Update(Mjeku);
             await _context.SaveChangesAsync();
         }
 
-        // DELETE — fshi nxënësin
+       
         public async Task DeleteAsync(int id)
         {
             var Mjeku = await _context.Mjeket.FindAsync(id);

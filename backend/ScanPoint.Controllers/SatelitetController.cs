@@ -11,7 +11,7 @@ namespace ScanPoint.Controllers
     {
         private readonly ISateliteRepository _sateliteRepo;
 
-        // Na duhet për validimin e planetit
+       
         private readonly IPlanetRepository _planetRepo;
 
         public SatelitetController(
@@ -22,7 +22,7 @@ namespace ScanPoint.Controllers
             _planetRepo = planetRepo;
         }
 
-        // Helper — Satelite -> DTO
+     
         private static SateliteReadDto MapToDto(
             Satelite s)
         {
@@ -33,15 +33,10 @@ namespace ScanPoint.Controllers
                 IsDeleted = s.IsDeleted,
                 ID_Planet = s.ID_Planet,
 
-                EmriPlanetit =
-                    s.Planet?.EmriPlanetit ?? ""
+                EmriPlanetit =s.Planet?.EmriPlanetit ?? ""
             };
         }
 
-        // ===========================
-        // GET /api/Satelitet
-        // Merr të gjithë satelitët
-        // ===========================
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -52,10 +47,6 @@ namespace ScanPoint.Controllers
                 satelitet.Select(MapToDto));
         }
 
-        // ===========================
-        // GET /api/Satelitet/byPlanet/{planetId}
-        // Merr satelitët e një planeti
-        // ===========================
         [HttpGet("byPlanet/{planetId}")]
         public async Task<IActionResult>
             GetByPlanet(int planetId)
@@ -68,10 +59,7 @@ namespace ScanPoint.Controllers
                 satelitet.Select(MapToDto));
         }
 
-        // ===========================
-        // GET /api/Satelitet/{id}
-        // Merr satelitin sipas ID
-        // ===========================
+        
         [HttpGet("{id}")]
         public async Task<IActionResult>
             GetById(int id)
@@ -89,10 +77,7 @@ namespace ScanPoint.Controllers
             return Ok(MapToDto(satelite));
         }
 
-        // ===========================
-        // POST /api/Satelitet
-        // Krijo satelit të ri
-        // ===========================
+     
         [HttpPost]
         public async Task<IActionResult> Create(
             [FromBody] SateliteCreateDto dto)
@@ -100,7 +85,7 @@ namespace ScanPoint.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Kontrollo nëse planeti ekziston
+            
             var planet =
                 await _planetRepo
                 .GetByIdAsync(dto.ID_Planet);
@@ -114,11 +99,9 @@ namespace ScanPoint.Controllers
 
             var satelite = new Satelite
             {
-                EmriSatelitit =
-                    dto.EmriSatelitit,
+                EmriSatelitit = dto.EmriSatelitit,
 
-                ID_Planet =
-                    dto.ID_Planet
+                ID_Planet = dto.ID_Planet
             };
 
             var created =
@@ -135,10 +118,7 @@ namespace ScanPoint.Controllers
                 MapToDto(withPlanet!));
         }
 
-        // ===========================
-        // PUT /api/Satelitet/{id}
-        // Update satelit
-        // ===========================
+      
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
@@ -157,7 +137,7 @@ namespace ScanPoint.Controllers
                     "Sateliti nuk u gjet."
                 });
 
-            // Kontrollo planetin
+           
             var planet =
                 await _planetRepo
                 .GetByIdAsync(dto.ID_Planet);
@@ -169,12 +149,10 @@ namespace ScanPoint.Controllers
                     "Planeti nuk ekziston."
                 });
 
-            // Update fields
-            satelite.EmriSatelitit =
-                dto.EmriSatelitit;
+         
+            satelite.EmriSatelitit = dto.EmriSatelitit;
 
-            satelite.ID_Planet =
-                dto.ID_Planet;
+            satelite.ID_Planet = dto.ID_Planet;
 
             await _sateliteRepo
                 .UpdateAsync(satelite);
@@ -186,10 +164,7 @@ namespace ScanPoint.Controllers
             });
         }
 
-        // ===========================
-        // DELETE /api/Satelitet/{id}
-        // Soft Delete
-        // ===========================
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult>
             Delete(int id)

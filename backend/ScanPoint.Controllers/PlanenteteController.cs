@@ -9,19 +9,15 @@ namespace ScanPoint.Controllers
     [Route("api/[controller]")]
     public class PlanenteteController : ControllerBase
     {
-        // Repository për databazë
+      
         private readonly IPlanetRepository _planetRepo;
 
-        // Dependency Injection
+    
         public PlanenteteController(IPlanetRepository planetRepo)
         {
             _planetRepo = planetRepo;
         }
 
-        // ===========================
-        // GET /api/Planentete
-        // Merr të gjithë planetët
-        // ===========================
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -38,10 +34,6 @@ namespace ScanPoint.Controllers
             return Ok(result);
         }
 
-        // ===========================
-        // GET /api/Planentete/{id}
-        // Merr planetin sipas ID
-        // ===========================
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -62,10 +54,6 @@ namespace ScanPoint.Controllers
             });
         }
 
-        // ===========================
-        // POST /api/Planentete
-        // Krijo planet të ri
-        // ===========================
         [HttpPost]
         public async Task<IActionResult> Create(
             [FromBody] PlanetCreateDto dto)
@@ -95,10 +83,6 @@ namespace ScanPoint.Controllers
                 });
         }
 
-        // ===========================
-        // PUT /api/Planentete/{id}
-        // Update planet
-        // ===========================
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
             int id,
@@ -116,12 +100,10 @@ namespace ScanPoint.Controllers
                     message = "Planeti nuk u gjet."
                 });
 
-            // Përditëso fushat
-            planet.EmriPlanetit =
-                dto.EmriPlanetit;
+           
+            planet.EmriPlanetit =dto.EmriPlanetit;
 
-            planet.Type =
-                dto.Type;
+            planet.Type = dto.Type;
 
             await _planetRepo.UpdateAsync(planet);
 
@@ -132,10 +114,7 @@ namespace ScanPoint.Controllers
             });
         }
 
-        // ===========================
-        // DELETE /api/Planentete/{id}
-        // Soft Delete
-        // ===========================
+    
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {

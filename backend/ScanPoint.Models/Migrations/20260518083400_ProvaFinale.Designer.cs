@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScanPoint.Models.Data;
 
@@ -11,9 +12,11 @@ using ScanPoint.Models.Data;
 namespace ScanPoint.Models.Migrations
 {
     [DbContext(typeof(ScanPointDbContext))]
-    partial class ScanPointDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260518083400_ProvaFinale")]
+    partial class ProvaFinale
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,53 @@ namespace ScanPoint.Models.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Contract", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<int>("ID_Employee")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Pershkrimi")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Titulli")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Employee");
+
+                    b.ToTable("Contracts");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Employee", b =>
+                {
+                    b.Property<int>("ID_Employee")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Employee"));
+
+                    b.Property<string>("EmriEmployee")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MbiemriEmployee")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Employee");
+
+                    b.ToTable("Employee");
+                });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
@@ -418,6 +468,17 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("Managers", (string)null);
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Contract", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Employee", "Employee")
+                        .WithMany("Contract")
+                        .HasForeignKey("ID_Employee")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Employee");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Cashier", "Cashier")
@@ -553,6 +614,11 @@ namespace ScanPoint.Models.Migrations
                     b.HasOne("ScanPoint.Models.Models.Shop", null)
                         .WithMany("Managers")
                         .HasForeignKey("ShopId1");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Employee", b =>
+                {
+                    b.Navigation("Contract");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>

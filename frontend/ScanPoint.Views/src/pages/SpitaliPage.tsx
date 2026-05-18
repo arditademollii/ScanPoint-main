@@ -1,4 +1,4 @@
-// SpitaliPage.tsx — VERSIONI I PLOTË I RREGULLUAR
+
 import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 
@@ -12,19 +12,19 @@ interface Spitali {
 
 interface FormData {
   emriSpitalit: string;
-  numriKateve: number | "";   // ✅ FIX 1: "" lejon input bosh vizualisht
+  numriKateve: number | "";   
   kaUrgjence: boolean;
   dataHapjes: string;
 }
 
 const emptyForm: FormData = {
   emriSpitalit: "",
-  numriKateve: "",             // ✅ FIX 1: fillim bosh, jo 0
+  numriKateve: "",           
   kaUrgjence: false,
   dataHapjes: "",
 };
 
-// Kthen ISO string → datë lokale shqipe për shfaqje në tabelë
+
 const formatDate = (iso: string): string => {
   if (!iso) return "";
   const d = new Date(iso);
@@ -32,7 +32,7 @@ const formatDate = (iso: string): string => {
   return d.toLocaleDateString("sq-AL");
 };
 
-// Kthen ISO string → "yyyy-MM-dd" për input type="date"
+
 const toInputDate = (iso: string): string => {
   if (!iso) return "";
   return iso.split("T")[0];
@@ -69,7 +69,7 @@ export default function SpitaliPage() {
   const handleOpenAdd = () => {
     setEditId(null);
     setFormData(emptyForm);
-    setFormError(null);        // ✅ FIX 3: pastro gabimet e mëparshme
+    setFormError(null);        
     setShowForm(true);
   };
 
@@ -81,13 +81,13 @@ export default function SpitaliPage() {
       kaUrgjence: s.kaUrgjence,
       dataHapjes: toInputDate(s.dataHapjes),
     });
-    setFormError(null);        // ✅ FIX 3: pastro gabimet e mëparshme
+    setFormError(null);      
     setShowForm(true);
   };
 
   const handleCancel = () => {
     setShowForm(false);
-    setFormError(null);        // ✅ FIX 3: pastro kur anulohet
+    setFormError(null);       
     setFormData(emptyForm);
   };
 
@@ -95,7 +95,7 @@ export default function SpitaliPage() {
     e.preventDefault();
     setFormError(null);
 
-    // ✅ FIX 4: validim i plotë me mesazhe specifike inline
+   
     if (!formData.emriSpitalit.trim()) {
       setFormError("Emri i spitalit është i detyrueshëm.");
       return;
@@ -109,7 +109,7 @@ export default function SpitaliPage() {
       return;
     }
 
-    // ✅ FIX 5: kasto numriKateve → number para dërgimit
+
     const payload = {
       ...formData,
       numriKateve: Number(formData.numriKateve),
@@ -178,11 +178,11 @@ export default function SpitaliPage() {
               <input
                 type="number"
                 value={formData.numriKateve}
-                min={1}                            // ✅ FIX 6: ndalon vlera negative/zero nga UI
+                min={1}                           
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    // ✅ FIX 1: ruan "" kur fusha pastrohet
+                   
                     numriKateve: e.target.value === "" ? "" : Number(e.target.value),
                   })
                 }

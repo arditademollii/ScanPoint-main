@@ -1,4 +1,3 @@
-// MjekuPage.tsx — VERSIONI I PLOTË I RREGULLUAR
 
 import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
@@ -20,10 +19,7 @@ interface Spitali {
 
 interface FormData {
   emriMjekut: string;
-
-  // ✅ LEJON DECIMAL + INPUT BOSH
-  paga: number | "";
-
+  paga: string;
   dataPunesimit: string;
   eshteSpecialist: boolean;
   ID_Spitali: number;
@@ -37,43 +33,27 @@ const emptyForm: FormData = {
   ID_Spitali: 0,
 };
 
-// ==========================
-// HELPER PËR DATAT
-// ==========================
-
-// Helper për shfaqje në tabelë
 const formatDate = (iso: string): string => {
   if (!iso) return "";
-
   const d = new Date(iso);
-
   if (isNaN(d.getTime())) return iso;
-
   return d.toLocaleDateString("sq-AL");
 };
 
-// Helper për input type="date"
 const toInputDate = (iso: string): string => {
   if (!iso) return "";
-
   return iso.split("T")[0];
 };
 
 export default function MjekuPage() {
   const [Mjekut, setMjekut] = useState<Mjeku[]>([]);
   const [spitalet, setSpitalet] = useState<Spitali[]>([]);
-
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-
   const [showForm, setShowForm] = useState(false);
-
   const [editId, setEditId] = useState<number | null>(null);
-
   const [formData, setFormData] = useState<FormData>(emptyForm);
-
   const [submitLoading, setSubmitLoading] = useState(false);
-
   const [formError, setFormError] = useState<string | null>(null);
 
   // ==========================
@@ -92,18 +72,11 @@ export default function MjekuPage() {
   // const [filterSpecialist, setFilterSpecialist] =
   // useState<boolean | null>(null);
 
-  // ==========================
-  // FETCH SPITALET
-  // ==========================
-
   const fetchSpitalet = async (): Promise<void> => {
     try {
       const res = await api.get("/api/Spitali");
-
       setSpitalet(res.data);
-    } catch {
-      // nuk stopojmë faqen nëse dështon lista e spitaleve
-    }
+    } catch {}
   };
 
   // ==========================
@@ -112,9 +85,7 @@ export default function MjekuPage() {
 
   const fetchMjekut = async () => {
     setLoading(true);
-
     setError(null);
-
     try {
       const url =
         filterSpitaliId > 0
@@ -134,7 +105,6 @@ export default function MjekuPage() {
       //     : "/api/Mjeku";
 
       const res = await api.get(url);
-
       setMjekut(res.data);
     } catch (err: any) {
       setError(err.response?.data?.message || "Ngarkimi dështoi");
@@ -142,10 +112,6 @@ export default function MjekuPage() {
       setLoading(false);
     }
   };
-
-  // ==========================
-  // USE EFFECT
-  // ==========================
 
   useEffect(() => {
     fetchSpitalet();
@@ -165,81 +131,50 @@ export default function MjekuPage() {
   //   fetchMjekut();
   // }, [filterSpecialist]);
 
-  // ==========================
-  // HAP FORMËN PËR CREATE
-  // ==========================
-
   const handleOpenAdd = () => {
     setEditId(null);
-
     setFormData(emptyForm);
-
     setFormError(null);
-
     setShowForm(true);
   };
-
-  // ==========================
-  // HAP FORMËN PËR EDIT
-  // ==========================
 
   const handleOpenEdit = (n: Mjeku) => {
     setEditId(n.ID);
-
     setFormData({
       emriMjekut: n.emriMjekut,
-
-      // ✅ DECIMAL NGA BACK
-      paga: n.paga,
-
+      paga: Number(n.paga).toFixed(2),
       dataPunesimit: toInputDate(n.dataPunesimit),
-
       eshteSpecialist: n.eshteSpecialist,
-
       ID_Spitali: n.ID_Spitali,
     });
-
     setFormError(null);
-
     setShowForm(true);
   };
 
-  // ==========================
-  // CANCEL
-  // ==========================
-
   const handleCancel = () => {
     setShowForm(false);
-
     setFormError(null);
-
     setFormData(emptyForm);
   };
 
-  // ==========================
-  // SUBMIT
-  // ==========================
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
     setFormError(null);
-
-    // ==========================
-    // VALIDIMET
-    // ==========================
 
     if (!formData.emriMjekut.trim()) {
       setFormError("Emri i mjekut është i detyrueshëm.");
       return;
     }
 
+    // ✅ VALIDIM MANUAL për input type="text"
+    // Lejon numra me presje dhjetore: 850, 850.5, 850.50
+    const pagaRegex = /^\d+(\.\d{1,2})?$/;
     if (
       formData.paga === "" ||
-      isNaN(Number(formData.paga)) ||
-      Number(formData.paga) <= 0
+      !pagaRegex.test(formData.paga.trim()) ||
+      parseFloat(formData.paga) <= 0
     ) {
-      setFormError("Paga duhet të jetë më e madhe se 0.");
+      setFormError("Paga duhet të jetë një numër pozitiv (p.sh. 850 ose 850.50).");
       return;
     }
 
@@ -253,19 +188,13 @@ export default function MjekuPage() {
       return;
     }
 
-    // ==========================
-    // PAYLOAD
-    // ==========================
-
     const payload = {
       ...formData,
-
-      // ✅ SIGURON QË DËRGOHET DECIMAL
-      paga: parseFloat(String(formData.paga)),
+      // ✅ Konverto në number vetëm këtu, para dërgimit
+      paga: parseFloat(formData.paga),
     };
 
     setSubmitLoading(true);
-
     try {
       if (editId !== null) {
         await api.put(`/api/Mjeku/${editId}`, payload);
@@ -274,9 +203,7 @@ export default function MjekuPage() {
       }
 
       setShowForm(false);
-
       setFormData(emptyForm);
-
       fetchMjekut();
     } catch (err: any) {
       setFormError(err.response?.data?.message || "Operacioni dështoi");
@@ -285,16 +212,10 @@ export default function MjekuPage() {
     }
   };
 
-  // ==========================
-  // DELETE
-  // ==========================
-
   const handleDelete = async (id: number) => {
     if (!confirm("A je i sigurt?")) return;
-
     try {
       await api.delete(`/api/Mjeku/${id}`);
-
       fetchMjekut();
     } catch (err: any) {
       alert(err.response?.data?.message || "Fshirja dështoi");
@@ -380,7 +301,6 @@ export default function MjekuPage() {
               : "➕ Shto Mjek të Ri"}
           </h3>
 
-          {/* GABIMET INLINE */}
           {formError && (
             <p style={styles.formErrorMsg}>
               ⚠️ {formError}
@@ -394,7 +314,6 @@ export default function MjekuPage() {
 
             <div style={styles.formGroup}>
               <label>Emri i Mjekut:</label>
-
               <input
                 type="text"
                 value={formData.emriMjekut}
@@ -410,34 +329,24 @@ export default function MjekuPage() {
             </div>
 
             {/* ==========================
-                PAGA DECIMAL
+                PAGA — type="text" për të shmangur
+                bug-un e browser me type="number"
+                që fshin vlerën kur fillon shtypja
             ========================== */}
 
             <div style={styles.formGroup}>
               <label>Paga (€):</label>
-
               <input
-                type="number"
-
-                // ✅ LEJON DECIMAL
-                step="0.01"
-
-                // ✅ VLERA MINIMALE
-                min="0.01"
-
+                type="text"
+                inputMode="decimal"
                 value={formData.paga}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-
-                    // ✅ LEJON INPUT BOSH
-                    // ✅ PËRNDRYSHE PARSE FLOAT
-                    paga:
-                      e.target.value === ""
-                        ? ""
-                        : parseFloat(e.target.value),
-                  })
-                }
+                onChange={(e) => {
+                  // ✅ Lejo vetëm shifra dhe një pikë dhjetore
+                  const val = e.target.value;
+                  if (val === "" || /^\d*\.?\d{0,2}$/.test(val)) {
+                    setFormData({ ...formData, paga: val });
+                  }
+                }}
                 placeholder="p.sh. 850.50"
                 style={styles.input}
               />
@@ -449,7 +358,6 @@ export default function MjekuPage() {
 
             <div style={styles.formGroup}>
               <label>Data e Punësimit:</label>
-
               <input
                 type="date"
                 value={formData.dataPunesimit}
@@ -487,12 +395,10 @@ export default function MjekuPage() {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      eshteSpecialist:
-                        e.target.checked,
+                      eshteSpecialist: e.target.checked,
                     })
                   }
                 />
-
                 Është Specialist
               </label>
             </div>
@@ -503,20 +409,16 @@ export default function MjekuPage() {
 
             <div style={styles.formGroup}>
               <label>Spitali:</label>
-
               <select
                 value={formData.ID_Spitali}
                 onChange={(e) =>
                   setFormData({
                     ...formData,
-                    ID_Spitali: Number(
-                      e.target.value
-                    ),
+                    ID_Spitali: Number(e.target.value),
                   })
                 }
                 style={{
                   ...styles.select,
-
                   border:
                     formData.ID_Spitali === 0
                       ? "1px solid #e74c3c"
@@ -660,15 +562,11 @@ export default function MjekuPage() {
                     </td>
 
                     <td style={styles.td}>
-                      {formatDate(
-                        n.dataPunesimit
-                      )}
+                      {formatDate(n.dataPunesimit)}
                     </td>
 
                     <td style={styles.td}>
-                      {n.eshteSpecialist
-                        ? "Po"
-                        : "Jo"}
+                      {n.eshteSpecialist ? "Po" : "Jo"}
                     </td>
 
                     <td style={styles.td}>
@@ -677,18 +575,14 @@ export default function MjekuPage() {
 
                     <td style={styles.td}>
                       <button
-                        onClick={() =>
-                          handleOpenEdit(n)
-                        }
+                        onClick={() => handleOpenEdit(n)}
                         style={styles.btnEdit}
                       >
                         ✏️ Edito
                       </button>
 
                       <button
-                        onClick={() =>
-                          handleDelete(n.ID)
-                        }
+                        onClick={() => handleDelete(n.ID)}
                         style={styles.btnDelete}
                       >
                         🗑️ Fshi
@@ -725,4 +619,6 @@ const styles: { [key: string]: React.CSSProperties } = {
   td: { padding: "10px 15px" },
   btnEdit: { backgroundColor: "#f39c12", color: "white", padding: "5px 12px", border: "none", borderRadius: "4px", cursor: "pointer", marginRight: "8px" },
   btnDelete: { backgroundColor: "#e74c3c", color: "white", padding: "5px 12px", border: "none", borderRadius: "4px", cursor: "pointer" },
+  btnClearFilter: { backgroundColor: "#e74c3c", color: "white", padding: "6px 12px", border: "none", borderRadius: "4px", cursor: "pointer", marginLeft: "10px" },
+  formErrorMsg: { color: "#e74c3c", backgroundColor: "#fdecea", border: "1px solid #e74c3c", borderRadius: "4px", padding: "8px 12px" },
 };

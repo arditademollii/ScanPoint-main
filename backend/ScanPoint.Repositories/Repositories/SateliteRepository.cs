@@ -5,7 +5,7 @@ using ScanPoint.Models.Data;
 
 namespace ScanPoint.Repositories.Repositories
 {
-    // Repository për Satelite
+   
     public class SateliteRepository : ISateliteRepository
     {
         private readonly ScanPointDbContext _context;
@@ -15,7 +15,7 @@ namespace ScanPoint.Repositories.Repositories
             _context = context;
         }
 
-        // GET ALL — të gjithë satelitët
+       
         public async Task<List<Satelite>> GetAllAsync()
         {
             return await _context.Satelitet
@@ -26,7 +26,7 @@ namespace ScanPoint.Repositories.Repositories
                 .ToListAsync();
         }
 
-        // GET BY PLANET — satelitët e një planeti
+     
         public async Task<List<Satelite>> GetByPlanetAsync(int planetId)
         {
             return await _context.Satelitet
@@ -38,7 +38,7 @@ namespace ScanPoint.Repositories.Repositories
                 .ToListAsync();
         }
 
-        // GET BY ID
+       
         public async Task<Satelite?> GetByIdAsync(int id)
         {
             return await _context.Satelitet
@@ -49,7 +49,6 @@ namespace ScanPoint.Repositories.Repositories
                     !s.Planet.IsDeleted);
         }
 
-        // CREATE
         public async Task<Satelite> CreateAsync(Satelite satelite)
         {
             _context.Satelitet.Add(satelite);
@@ -59,7 +58,7 @@ namespace ScanPoint.Repositories.Repositories
             return satelite;
         }
 
-        // UPDATE
+       
         public async Task UpdateAsync(Satelite satelite)
         {
             _context.Satelitet.Update(satelite);
@@ -67,7 +66,7 @@ namespace ScanPoint.Repositories.Repositories
             await _context.SaveChangesAsync();
         }
 
-        // DELETE — Soft Delete
+      
         public async Task DeleteAsync(int id)
         {
             var satelite = await _context.Satelitet
@@ -80,7 +79,7 @@ namespace ScanPoint.Repositories.Repositories
                     $"Sateliti me ID {id} nuk u gjet."
                 );
 
-            // Soft Delete
+          
             satelite.IsDeleted = true;
 
             await _context.SaveChangesAsync();

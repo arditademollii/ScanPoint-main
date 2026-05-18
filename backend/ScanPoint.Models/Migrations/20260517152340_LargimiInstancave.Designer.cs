@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScanPoint.Models.Data;
 
@@ -11,9 +12,11 @@ using ScanPoint.Models.Data;
 namespace ScanPoint.Models.Migrations
 {
     [DbContext(typeof(ScanPointDbContext))]
-    partial class ScanPointDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517152340_LargimiInstancave")]
+    partial class LargimiInstancave
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,27 @@ namespace ScanPoint.Models.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Biblioteka", b =>
+                {
+                    b.Property<int>("ID_Biblioteka")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Biblioteka"));
+
+                    b.Property<string>("Adresa")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmriBibliotekes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Biblioteka");
+
+                    b.ToTable("Bibliotekat");
+                });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
@@ -88,6 +112,35 @@ namespace ScanPoint.Models.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("InvoiceItems");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Libri", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("Autori")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Biblioteka")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumriFaqeve")
+                        .HasColumnType("int");
+
+                    b.Property<string>("TitulliLibrit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Biblioteka");
+
+                    b.ToTable("Librat");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
@@ -456,6 +509,17 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Libri", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Biblioteka", "Biblioteka")
+                        .WithMany("Librat")
+                        .HasForeignKey("ID_Biblioteka")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Biblioteka");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Spitali", "Spitali")
@@ -553,6 +617,11 @@ namespace ScanPoint.Models.Migrations
                     b.HasOne("ScanPoint.Models.Models.Shop", null)
                         .WithMany("Managers")
                         .HasForeignKey("ShopId1");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Biblioteka", b =>
+                {
+                    b.Navigation("Librat");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>

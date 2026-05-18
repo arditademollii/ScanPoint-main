@@ -5,32 +5,28 @@ using ScanPoint.Repositories.Interfaces;
 
 namespace ScanPoint.Controllers
 {
-    // [ApiController] — e bën këtë klasë controller të API-t
-    // [Route("api/[controller]")] — URL bëhet: /api/Spitali
+  
     [ApiController]
     [Route("api/[controller]")]
     public class SpitaliController : ControllerBase
     {
-        // Repository na jep qasjen te databaza
+       
         private readonly ISpitaliRepository _SpitaliRepo;
 
-        // Dependency Injection — ASP.NET Core na jep repository automatikisht
+       
         public SpitaliController(ISpitaliRepository SpitaliRepo)
         {
             _SpitaliRepo = SpitaliRepo;
         }
 
-        // ===========================
-        // GET /api/Spitali
-        // Merr listën e të gjitha Spitalive
-        // ===========================
+      
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
             var Spitalit = await _SpitaliRepo.
                 GetAllAsync();
 
-            // Mapim: Spitali → SpitaliReadDto (nuk i kthejmë të gjitha fushat)
+           
             var result = Spitalit.Select(s => new SpitaliReadDto
             {
                 ID_Spitali = s.ID_Spitali,
@@ -40,13 +36,10 @@ namespace ScanPoint.Controllers
                 DataHapjes = s.DataHapjes   
             });
 
-            return Ok(result); // 200 OK + JSON
+            return Ok(result);
         }
 
-        // ===========================
-        // GET /api/Spitali/{id}
-        // Merr një shkollë specifike
-        // ===========================
+       
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -64,18 +57,15 @@ namespace ScanPoint.Controllers
             });
         }
 
-        // ===========================
-        // POST /api/Spitali
-        // Shto shkollë të re
-        // ===========================
+     
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] SpitaliCreateDto dto)
         {
-            // ModelState.IsValid — kontrollon Data Annotations nga DTO
+            
             if (!ModelState.IsValid)
-                return BadRequest(ModelState); // 400 nëse të dhënat janë të gabuara
+                return BadRequest(ModelState); 
 
-            // Krijojmë entitetin nga DTO
+           
             var Spitali = new Spitali
             {
                 EmriSpitalit = dto.EmriSpitalit,
@@ -86,7 +76,7 @@ namespace ScanPoint.Controllers
 
             var created = await _SpitaliRepo.CreateAsync(Spitali);
 
-            // 201 Created + URL ku mund ta gjesh entitetin e ri
+           
             return CreatedAtAction(nameof(GetById), new { id = created.ID_Spitali },
                 new SpitaliReadDto
                 {
@@ -98,10 +88,7 @@ namespace ScanPoint.Controllers
                 });
         }
 
-        // ===========================
-        // PUT /api/Spitali/{id}
-        // Përditëso shkollën ekzistuese
-        // ===========================
+       
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, [FromBody] SpitaliCreateDto dto)
         {
@@ -112,7 +99,6 @@ namespace ScanPoint.Controllers
             if (Spitali == null)
                 return NotFound(new { message = "Spitali nuk u gjet." });
 
-            // Përditëso fushat
             Spitali.EmriSpitalit = dto.EmriSpitalit;
             Spitali.NumriKateve = dto.NumriKateve;
             Spitali.KaUrgjence = dto.KaUrgjence;
@@ -123,21 +109,18 @@ namespace ScanPoint.Controllers
             return Ok(new { message = "Spitali u përditësua me sukses." }); // 200
         }
 
-        // ===========================
-        // DELETE /api/Spitali/{id}
-        // Fshi shkollën
-        // ===========================
+       
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)
         {
             try
             {
                 await _SpitaliRepo.DeleteAsync(id);
-                return NoContent(); // 204 — sukses, pa body
+                return NoContent(); 
             }
             catch (KeyNotFoundException ex)
             {
-                return NotFound(new { message = ex.Message }); // 404
+                return NotFound(new { message = ex.Message }); 
             }
         }
     }

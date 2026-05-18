@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 
-// ID_Planet mbetet me kapitale
+
 interface Planet {
   ID_Planet: number;
   emriPlanetit: string;
@@ -33,9 +33,7 @@ export default function PlanetPage() {
   const [submitLoading, setSubmitLoading] =
     useState(false);
 
-  // ===========================
-  // GET ALL
-  // ===========================
+ 
   const fetchPlanetet = async () => {
     setLoading(true);
     setError(null);
@@ -59,18 +57,14 @@ export default function PlanetPage() {
     fetchPlanetet();
   }, []);
 
-  // ===========================
-  // OPEN ADD FORM
-  // ===========================
+ 
   const handleOpenAdd = () => {
     setEditId(null);
     setFormData(emptyForm);
     setShowForm(true);
   };
 
-  // ===========================
-  // OPEN EDIT FORM
-  // ===========================
+
   const handleOpenEdit = (p: Planet) => {
     setEditId(p.ID_Planet);
 
@@ -82,9 +76,7 @@ export default function PlanetPage() {
     setShowForm(true);
   };
 
-  // ===========================
-  // SUBMIT FORM
-  // ===========================
+ 
   const handleSubmit = async (
     e: React.FormEvent
   ) => {
@@ -128,9 +120,7 @@ export default function PlanetPage() {
     }
   };
 
-  // ===========================
-  // DELETE
-  // ===========================
+
   const handleDelete = async (
     id: number
   ) => {

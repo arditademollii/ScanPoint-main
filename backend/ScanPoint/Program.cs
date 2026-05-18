@@ -94,9 +94,8 @@ builder.Services.AddScoped<IManagerService, ManagerService>();
 builder.Services.AddScoped<IShkollaRepository, ShkollaRepository>();
 builder.Services.AddScoped<INxenesiRepository, NxenesiRepository>();
 
-builder.Services.AddScoped<IFabrikaRepository, FabrikaRepository>();
-builder.Services.AddScoped<IPunetoriRepository, PunetoriRepository>();
 
+/*
 builder.Services.AddScoped<ILigjeruesiRepository, LigjeruesiRepository>();
 builder.Services.AddScoped<ILigjerataRepository, LigjeratatRepository>();
 
@@ -109,6 +108,7 @@ builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
 builder.Services.AddScoped<IUniversitetiRepository, UniversitetiRepository>();
 builder.Services.AddScoped<IProfesoriRepository, ProfesoriRepository>();
+*/
 
 builder.Services.AddScoped<ISpitaliRepository, SpitaliRepository>();
 builder.Services.AddScoped<IMjekuRepository, MjekuRepository>();

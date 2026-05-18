@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import api from "../api/axiosInstance";
 
-// ID_Shkolla mbetet me kapitale — toCamel nuk e prek (fillon me 2+ shkronja të mëdha)
+
 interface Shkolla {
   ID_Shkolla: number;
   emriShkolles: string;

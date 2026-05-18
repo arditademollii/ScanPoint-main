@@ -25,15 +25,13 @@ namespace ScanPoint.Models.Data
         public DbSet<Nxenesi> Nxenesit { get; set; }
 
 
-        public DbSet<Punetori> Punetoret { get; set; }
-
-        public DbSet<Fabrika> Fabrikat { get; set; }
+       
 
 
+        /*
+        public DbSet<Employee> Employee { get; set; }
 
-        public DbSet<Ligjeruesi> Ligjeruesit { get; set; }
-
-        public DbSet<Ligjerata> Ligjeratat { get; set; }
+        public DbSet<Contract> Contracts { get; set; }
 
         public DbSet<Employee> Employees { get; set; }
 
@@ -47,6 +45,8 @@ namespace ScanPoint.Models.Data
 
         public DbSet<Profesori> Profesoret { get; set; }
 
+
+        */
         public DbSet<Spitali> Spitalet { get; set; }
 
         public DbSet<Mjeku> Mjeket { get; set; }
@@ -220,17 +220,13 @@ namespace ScanPoint.Models.Data
                 .HasForeignKey(n => n.ID_Shkolla)   //Foreign Key është ID_Shkolla
                 .OnDelete(DeleteBehavior.Cascade);  ///Nëse fshihet shkolla, fshihen automatikisht edhe nxënësit e saj.
 
-            modelBuilder.Entity<Fabrika>()
-               .HasMany(f => f.Punetoret)  //nje shkolle ka shume nxenes    s per shkollen dhe n per nxenesin
-               .WithOne(p => p.Fabrika)    // Çdo nxënës ka vetëm NJË shkollë.
-               .HasForeignKey(p => p.ID_Fabrika)   //Foreign Key është ID_Shkolla
-               .OnDelete(DeleteBehavior.Cascade);
-            
+           
+            /*
 
-            modelBuilder.Entity<Ligjeruesi>()
-              .HasMany(l => l.Ligjeratat)  //nje ligjerues ka shume ligjerata    l per ligjeruesin dhe g per ligjeraten
-              .WithOne(g => g.Ligjeruesi)    // Çdo ligjerate ka vetëm NJË ligjerues.
-              .HasForeignKey(g => g.ID_Ligjeruesi)   //Foreign Key është ID_Ligjeruesi
+            modelBuilder.Entity<Employee>()
+              .HasMany(l => l.Contracts)  //nje ligjerues ka shume ligjerata    l per ligjeruesin dhe g per ligjeraten
+              .WithOne(g => g.Employee)    // Çdo ligjerate ka vetëm NJË ligjerues.
+              .HasForeignKey(g => g.ID_Employee)   //Foreign Key është ID_Employee
               .OnDelete(DeleteBehavior.Cascade);
 
 
@@ -238,13 +234,13 @@ namespace ScanPoint.Models.Data
             modelBuilder.Entity<Employee>()
             .HasMany(c => c.Contracts)  //nje ligjerues ka shume ligjerata    l per ligjeruesin dhe g per ligjeraten
             .WithOne(e => e.Employee)    // Çdo ligjerate ka vetëm NJË ligjerues.
-            .HasForeignKey(e => e.ID_Employee)   //Foreign Key është ID_Ligjeruesi
+            .HasForeignKey(e => e.ID_Employee)   //Foreign Key është ID_Employee
             .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Team232470351>()
           .HasMany(c => c.Players232470351)  //nje ligjerues ka shume ligjerata    l per ligjeruesin dhe g per ligjeraten
           .WithOne(e => e.Team232470351)    // Çdo ligjerate ka vetëm NJË ligjerues.
-          .HasForeignKey(e => e.ID_Team232470351)   //Foreign Key është ID_Ligjeruesi
+          .HasForeignKey(e => e.ID_Team232470351)   //Foreign Key është ID_Employee
           .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Universiteti>()
@@ -253,7 +249,7 @@ namespace ScanPoint.Models.Data
         .HasForeignKey(e => e.ID_Universiteti)   //Foreign Key është ID_Universiteti
         .OnDelete(DeleteBehavior.Cascade);
 
-
+            */
             modelBuilder.Entity<Spitali>()
        .HasMany(c => c.Mjeket)  //nje spital ka shume mjeke    s per spitalin dhe m per mjekun
        .WithOne(e => e.Spitali)    // Çdo mjek ka vetëm NJË spital.
@@ -276,9 +272,9 @@ namespace ScanPoint.Models.Data
 
 
             * kodi per NmeN
-            modelBuilder.Entity<Studenti>()
+            modelBuilder.Entity<Contract>()
             .HasMany(s => s.Lendet)
-            .WithMany(l => l.Studentet);
+            .WithMany(l => l.Contract);
 
 
 
@@ -288,7 +284,7 @@ namespace ScanPoint.Models.Data
                 public class StudentiLenda
                 {
                     public int StudentiID { get; set; }
-                    public Studenti Studenti { get; set; } = null!;
+                    public Contract Contract { get; set; } = null!;
 
                     public int LendaID { get; set; }
                     public Lenda Lenda { get; set; } = null!;

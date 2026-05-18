@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScanPoint.Models.Data;
 
@@ -11,9 +12,11 @@ using ScanPoint.Models.Data;
 namespace ScanPoint.Models.Migrations
 {
     [DbContext(typeof(ScanPointDbContext))]
-    partial class ScanPointDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517154844_Prova11")]
+    partial class Prova11
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,31 @@ namespace ScanPoint.Models.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Fabrika", b =>
+                {
+                    b.Property<int>("ID_Fabrika")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Fabrika"));
+
+                    b.Property<string>("EmriFabrikes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("MbiemriFabrikes")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Pozita")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Fabrika");
+
+                    b.ToTable("Fabrikat");
+                });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
@@ -216,6 +244,32 @@ namespace ScanPoint.Models.Migrations
                         .IsUnique();
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Punetori", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("EmriPunetorit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Fabrika")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Lokacioni")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Fabrika");
+
+                    b.ToTable("Punetoret");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
@@ -489,6 +543,17 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Shop");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Punetori", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Fabrika", "Fabrika")
+                        .WithMany("Punetori")
+                        .HasForeignKey("ID_Fabrika")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fabrika");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Planet", "Planet")
@@ -553,6 +618,11 @@ namespace ScanPoint.Models.Migrations
                     b.HasOne("ScanPoint.Models.Models.Shop", null)
                         .WithMany("Managers")
                         .HasForeignKey("ShopId1");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Fabrika", b =>
+                {
+                    b.Navigation("Punetori");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>

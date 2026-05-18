@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ScanPoint.Models.Data;
 
@@ -11,9 +12,11 @@ using ScanPoint.Models.Data;
 namespace ScanPoint.Models.Migrations
 {
     [DbContext(typeof(ScanPointDbContext))]
-    partial class ScanPointDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260517193427_Prova3")]
+    partial class Prova3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,6 +91,53 @@ namespace ScanPoint.Models.Migrations
                     b.HasIndex("ProductId");
 
                     b.ToTable("InvoiceItems");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjerata", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
+
+                    b.Property<string>("EmriLigjerates")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ID_Ligjeruesi")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("ID_Ligjeruesi");
+
+                    b.ToTable("Ligjeratat");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjeruesi", b =>
+                {
+                    b.Property<int>("ID_Ligjeruesi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Ligjeruesi"));
+
+                    b.Property<string>("Departamenti")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("EmriLigjeruesit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_Ligjeruesi");
+
+                    b.ToTable("Ligjeruesit");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
@@ -456,6 +506,17 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Product");
                 });
 
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjerata", b =>
+                {
+                    b.HasOne("ScanPoint.Models.Models.Ligjeruesi", "Ligjeruesi")
+                        .WithMany("Ligjerata")
+                        .HasForeignKey("ID_Ligjeruesi")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Ligjeruesi");
+                });
+
             modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Spitali", "Spitali")
@@ -558,6 +619,11 @@ namespace ScanPoint.Models.Migrations
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("ScanPoint.Models.Models.Ligjeruesi", b =>
+                {
+                    b.Navigation("Ligjerata");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Planet", b =>

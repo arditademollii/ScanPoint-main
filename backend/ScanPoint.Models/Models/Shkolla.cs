@@ -3,16 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ScanPoint.Models.Models
 {
-    // Tabela e shkollës — entity kryesore
+   
     public class Shkolla
-    {//key per me dite qe eshte primary key
+    {
         [Key]
-        public int ID_Shkolla { get; set; }          // Çelësi kryesor
-        public string EmriShkolles { get; set; } = "";  // Emri i shkollës
-        public string Qyteti { get; set; } = "";        // Qyteti ku ndodhet
+        public int ID_Shkolla { get; set; }         
+        public string EmriShkolles { get; set; } = "";  
+        public string Qyteti { get; set; } = "";      
 
-        // Navigation property — lista e nxënësve që i përkasin kësaj shkolle
-        // "Një shkollë ka SHUMË nxënës"
+       
         public List<Nxenesi> Nxenesit { get; set; } = new List<Nxenesi>();
 
         //kena mujt me perdore dhe ICollection<Nxenesi> ose IEnumerable<Nxenesi>
@@ -33,7 +32,7 @@ namespace ScanPoint.Models.Models
     public List<Lenda> Lendet { get; set; } = new();
            dhe
     // Shumë studentë
-    public List<Studenti> Studentet { get; set; } = new();
+    public List<Contract> Contract { get; set; } = new();
 
 
 

@@ -116,7 +116,7 @@ const AppSidebar: React.FC = () => {
         },
         // kjo pjese
         {
-          name: "Provimi",
+          name: "Prova-Shkolla-nxenesi",
           icon: <TableIcon />,
           subItems: [
             { name: "Shkollat", path: "/shkollat" },
@@ -125,52 +125,9 @@ const AppSidebar: React.FC = () => {
         },
      
       // kjo pjese
-      {
-        name: "Provimi3",
-        icon: <TableIcon />,
-        subItems: [
-          { name: "Ligjeruesit", path: "/ligjeruesit" },
-{ name: "Ligjeratat", path: "/ligjeratat" },
-        ],
-      },
-        //kjo pjese
+      
         {
-          name: "Provimi2",
-          icon: <TableIcon />,
-          subItems: [
-            { name: "Fabrikat", path: "/fabrikat" },
-{ name: "Punetoret", path: "/punetoret" },
-          ],
-        },
-
-        {
-          name: "Provimi5",
-          icon: <TableIcon />,
-          subItems: [
-            { name: "Employee", path: "/employee" },
-{ name: "Contract", path: "/Contract" },
-          ],
-        },
-
-        {
-          name: "Provimi6",
-          icon: <TableIcon />,
-          subItems: [
-            { name: "Team", path: "/team" },
-  { name: "Player", path: "/palyer" },
-          ],
-        },
-        {
-          name: "ProvimiCH1",
-          icon: <TableIcon />,
-          subItems: [
-            { name: "Universiteti", path: "/universiteti" },
-  { name: "Profesori", path: "/profesori" },
-          ],
-        },
-
-        {
-          name: "ProvimiAtribute",
+          name: "ProvaAtribute",
           icon: <TableIcon />,
           subItems: [
             { name: "Spitali", path: "/spitali" },
@@ -178,13 +135,15 @@ const AppSidebar: React.FC = () => {
           ],
         },
         {
-          name: "ProvimiSoftDelete",
+          name: "ProvaSoftDelete",
           icon: <TableIcon />,
           subItems: [
             { name: "Planet", path: "/planet" },
   { name: "Satelite", path: "/satelite" },
           ],
         },
+
+        
 
       ];
     } else {

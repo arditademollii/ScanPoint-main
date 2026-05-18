@@ -7,6 +7,7 @@ import { AuthProvider } from "./context/AuthContext";
 import InvoicesPage from "./pages/InvoicesPage";
 
 
+
 // ============================================================
 // LAZY IMPORTS — çdo faqe ngarkohet vetëm kur vizitohet
 // (code splitting = aplikacioni hapet më shpejt fillimisht)
@@ -61,10 +62,9 @@ const Videos  = lazy(() => import("./pages/UiElements/Videos"));
 const ShkollaPage = lazy(() => import("./pages/ShkollaPage"));
 const NxenesiPage = lazy(() => import("./pages/NxenesiPage"));
 
-const FabrikaPage = lazy(() => import("./pages/FabrikaPage"));
-const PunetoriPage = lazy(() => import("./pages/PunetoriPage"));
 
-const LigjeruesiPage = lazy(() => import("./pages/LigjeruesiPage"));
+
+/*const LigjeruesiPage = lazy(() => import("./pages/LigjeruesiPage"));
 const LigjerataPage = lazy(() => import("./pages/LigjerataPage"));
 
 const EmployeePage = lazy(() => import("./pages/EmployeePage"));
@@ -75,7 +75,7 @@ const PlayerPage = lazy(() => import("./pages/PlayerPage"));
 
 const UniversitetiPage = lazy(() => import("./pages/UniversitetiPage"));
 const ProfesoriPage = lazy(() => import("./pages/ProfesoriPage"));
-
+*/
 const SpitaliPage = lazy(() => import("./pages/SpitaliPage"));
 const MjekuPage = lazy(() => import("./pages/MjekuPage"));
 
@@ -183,19 +183,8 @@ export default function App() {
                 <Route path="/shkollat" element={<ShkollaPage />} />
                 <Route path="/nxenesit" element={<NxenesiPage />} />
 
-                <Route path="/fabrikat" element={<FabrikaPage />} />
-                <Route path="/punetoret" element={<PunetoriPage />} />
+                
 
-                <Route path="/ligjeruesit" element={<LigjeruesiPage />} />
-                <Route path="/ligjeratat" element={<LigjerataPage />} />
-                <Route path="/employee" element={<EmployeePage />} />
-                <Route path="/contract" element={<ContractPage />} />
-
-                <Route path="/team" element={<TeamPage />} />
-                <Route path="/palyer" element={<PlayerPage />} />
-
-                <Route path="/universiteti" element={<UniversitetiPage />} />
-                <Route path="/profesori" element={<ProfesoriPage />} />
 
                 <Route path="/spitali" element={<SpitaliPage />} />
                 <Route path="/mjeku" element={<MjekuPage />} />
