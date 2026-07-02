@@ -92,7 +92,11 @@ Multi-tenancy runs through `ShopId` on every operational table. User roles are m
 | `Product` | Inventory unit: barcode, price, quantity, category, expiry |
 | `Invoice` / `InvoiceItem` | Transaction record and its line items, scoped to shop and cashier |
 
+## Demo
 
+A full walkthrough — scanning a product, building an invoice, and watching the dashboard update — is available here:
+
+📹 **[Product & Invoice flow demo](docs/demo/ProductsInvoices.mp4)**
 
 ## Tech Stack
 
