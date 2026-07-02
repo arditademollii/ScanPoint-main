@@ -12,7 +12,7 @@ Point of sale, inventory, and revenue analytics — in one system, built to run 
 [![JWT Auth](https://img.shields.io/badge/Auth-JWT%20%2B%20Refresh%20Tokens-black)](#)
 [![License](https://img.shields.io/badge/license-MIT-green)](#license)
 
-[Features](#features) · [Architecture](#architecture) · [Setup](#getting-started)
+[Demo](#demo) · [Features](#features) · [Architecture](#architecture) · [Setup](#getting-started)
 
 </div>
 
@@ -92,11 +92,19 @@ Multi-tenancy runs through `ShopId` on every operational table. User roles are m
 | `Product` | Inventory unit: barcode, price, quantity, category, expiry |
 | `Invoice` / `InvoiceItem` | Transaction record and its line items, scoped to shop and cashier |
 
+---
+
 ## Demo
 
-A full walkthrough — scanning a product, building an invoice, and watching the dashboard update — is available here:
+Scanning a product, building an invoice, and watching the dashboard update — in real time:
 
-📹 **[Product & Invoice flow demo](docs/demo/ProductsInvoices.mp4)**
+![Product & Invoice flow demo](docs/demo/ProductsInvoices.gif)
+
+Prefer full quality with sound? Here's the full walkthrough:
+
+https://github.com/user-attachments/assets/dd409885-3ce6-4ee4-aae6-359d0c2bf82a
+
+---
 
 ## Tech Stack
 
@@ -133,8 +141,6 @@ Configure your connection string and JWT secret in `appsettings.Development.json
 
 The first account must be provisioned directly in the database or via a seed script — ScanPoint has no public sign-up by design.
 
-
-
-
+---
 
 </div>
