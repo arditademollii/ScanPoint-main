@@ -59,28 +59,10 @@ const Videos  = lazy(() => import("./pages/UiElements/Videos"));
 // FAQET E REJA — Shkolla & Nxënës (Provimi)
 // I importojmë lazy ashtu si çdo faqe tjetër në projekt
 // ==================================================================================================================================================================
-const ShkollaPage = lazy(() => import("./pages/ShkollaPage"));
-const NxenesiPage = lazy(() => import("./pages/NxenesiPage"));
 
 
 
-/*const LigjeruesiPage = lazy(() => import("./pages/LigjeruesiPage"));
-const LigjerataPage = lazy(() => import("./pages/LigjerataPage"));
 
-const EmployeePage = lazy(() => import("./pages/EmployeePage"));
-const ContractPage = lazy(() => import("./pages/ContractPage"));
-
-const TeamPage = lazy(() => import("./pages/TeamPage"));
-const PlayerPage = lazy(() => import("./pages/PlayerPage"));
-
-const UniversitetiPage = lazy(() => import("./pages/UniversitetiPage"));
-const ProfesoriPage = lazy(() => import("./pages/ProfesoriPage"));
-*/
-const SpitaliPage = lazy(() => import("./pages/SpitaliPage"));
-const MjekuPage = lazy(() => import("./pages/MjekuPage"));
-
-const PlanetPage = lazy(() => import("./pages/PlanetPage"));
-const SatelitePage = lazy(() => import("./pages/SatelitePage"));
 // ============================================================
 // LOADING FALLBACK — shfaqet ndërkohë që faqja po ngarkohet
 // ============================================================
@@ -180,17 +162,7 @@ export default function App() {
                       /shkollat  → ShkollaPage (lista + CRUD i shkollave)
                       /nxenesit  → NxenesiPage (lista + CRUD + filtrim sipas shkollës)
                 ================================================ =============================================================================================*/}
-                <Route path="/shkollat" element={<ShkollaPage />} />
-                <Route path="/nxenesit" element={<NxenesiPage />} />
-
                 
-
-
-                <Route path="/spitali" element={<SpitaliPage />} />
-                <Route path="/mjeku" element={<MjekuPage />} />
-
-                <Route path="/planet" element={<PlanetPage />} />
-                <Route path="/satelite" element={<SatelitePage />} />
               </Route>
             </Route>
 

@@ -1,15 +1,14 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Scalar.AspNetCore;
+using AutoMapper;
 using ScanPoint.Repositories.Interfaces;
 using ScanPoint.Repositories.Repositories;
-using Scalar.AspNetCore;
 using ScanPoint.Models.Data;
 using ScanPoint.Models.Mappings;
 using ScanPoint.Repositories;
-using ScanPoint.Repositories.Interfaces;
-using ScanPoint.Repositories.Repositories;
 
 using System.Text;
 
@@ -91,31 +90,12 @@ builder.Services.AddScoped<IManagerService, ManagerService>();
 //                                          ketu ki me shtu
 // ----------------------------====================================================-Dependency Injection — kur Controller kërkon IShkollaRepository, jep ShkollaRepository
 // "Scoped" = krijohet një instancë për çdo request HTTP
-builder.Services.AddScoped<IShkollaRepository, ShkollaRepository>();
-builder.Services.AddScoped<INxenesiRepository, NxenesiRepository>();
 
 
-/*
-builder.Services.AddScoped<ILigjeruesiRepository, LigjeruesiRepository>();
-builder.Services.AddScoped<ILigjerataRepository, LigjeratatRepository>();
-
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IContractRepository, ContractRepository>();
-
-builder.Services.AddScoped<ITeamRepository, TeamRepository>();
-builder.Services.AddScoped<IPlayerRepository, PlayerRepository>();
 
 
-builder.Services.AddScoped<IUniversitetiRepository, UniversitetiRepository>();
-builder.Services.AddScoped<IProfesoriRepository, ProfesoriRepository>();
-*/
-
-builder.Services.AddScoped<ISpitaliRepository, SpitaliRepository>();
-builder.Services.AddScoped<IMjekuRepository, MjekuRepository>();
 
 
-builder.Services.AddScoped<IPlanetRepository, PlanetRepository>();
-builder.Services.AddScoped<ISateliteRepository, SateliteRepository>();
 // AutoMapper
 builder.Services.AddAutoMapper(typeof(ManagerProfile).Assembly);
 

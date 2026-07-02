@@ -114,34 +114,10 @@ const AppSidebar: React.FC = () => {
             { name: "Invoices total amount", path: "/invoice-summary" },
           ],
         },
-        // kjo pjese
-        {
-          name: "Prova-Shkolla-nxenesi",
-          icon: <TableIcon />,
-          subItems: [
-            { name: "Shkollat", path: "/shkollat" },
-{ name: "Nxënësit", path: "/nxenesit" },
-          ],
-        },
+       
      
-      // kjo pjese
-      
-        {
-          name: "ProvaAtribute",
-          icon: <TableIcon />,
-          subItems: [
-            { name: "Spitali", path: "/spitali" },
-  { name: "Mjeku", path: "/mjeku" },
-          ],
-        },
-        {
-          name: "ProvaSoftDelete",
-          icon: <TableIcon />,
-          subItems: [
-            { name: "Planet", path: "/planet" },
-  { name: "Satelite", path: "/satelite" },
-          ],
-        },
+     
+        
 
         
 

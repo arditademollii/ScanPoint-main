@@ -21,39 +21,12 @@ namespace ScanPoint.Models.Data
         public DbSet<Invoice> Invoices { get; set; }
         public DbSet<InvoiceItem> InvoiceItems { get; set; }
         ///===================================================== kjo krijon tabelen( e detyryshme per cdo entitet)
-        public DbSet<Shkolla> Shkollat { get; set; }
-        public DbSet<Nxenesi> Nxenesit { get; set; }
+       
 
 
        
 
 
-        /*
-        public DbSet<Employee> Employee { get; set; }
-
-        public DbSet<Contract> Contracts { get; set; }
-
-        public DbSet<Employee> Employees { get; set; }
-
-        public DbSet<Contract> Contracts { get; set; }
-
-        public DbSet<Team232470351> Teams232470351 { get; set; }
-
-        public DbSet<Player232470351> Players232470351 { get; set; }
-
-        public DbSet<Universiteti> Universitetet { get; set; }
-
-        public DbSet<Profesori> Profesoret { get; set; }
-
-
-        */
-        public DbSet<Spitali> Spitalet { get; set; }
-
-        public DbSet<Mjeku> Mjeket { get; set; }
-
-        public DbSet<Planet> Planetet { get; set; }
-
-        public DbSet<Satelite> Satelitet { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -214,11 +187,7 @@ namespace ScanPoint.Models.Data
             // ===============================
             // SHKOLLA - NXENESI RELATION
             // ===============================
-            modelBuilder.Entity<Shkolla>()
-                .HasMany(s => s.Nxenesit)  //nje shkolle ka shume nxenes    s per shkollen dhe n per nxenesin
-                .WithOne(n => n.Shkolla)    // Çdo nxënës ka vetëm NJË shkollë.
-                .HasForeignKey(n => n.ID_Shkolla)   //Foreign Key është ID_Shkolla
-                .OnDelete(DeleteBehavior.Cascade);  ///Nëse fshihet shkolla, fshihen automatikisht edhe nxënësit e saj.
+            ///Nëse fshihet shkolla, fshihen automatikisht edhe nxënësit e saj.
 
            
             /*
@@ -250,17 +219,7 @@ namespace ScanPoint.Models.Data
         .OnDelete(DeleteBehavior.Cascade);
 
             */
-            modelBuilder.Entity<Spitali>()
-       .HasMany(c => c.Mjeket)  //nje spital ka shume mjeke    s per spitalin dhe m per mjekun
-       .WithOne(e => e.Spitali)    // Çdo mjek ka vetëm NJË spital.
-       .HasForeignKey(e => e.ID_Spitali)   //Foreign Key është ID_Spitali   
-       .OnDelete(DeleteBehavior.Cascade);
-
-            modelBuilder.Entity<Planet>()
-      .HasMany(c => c.Satelitet)  //nje planet ka shume satelite    p per planetin dhe s per sateliten
-      .WithOne(e => e.Planet)    // Çdo satelit ka vetëm NJË planet.
-      .HasForeignKey(e => e.ID_Planet)   //Foreign Key është ID_Planet   
-      .OnDelete(DeleteBehavior.Cascade);
+           
             /*
              
              * kodi per 1me1
