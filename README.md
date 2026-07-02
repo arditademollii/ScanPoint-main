@@ -41,7 +41,7 @@ It's the kind of system you'd expect from a team, built as a solo full-stack eng
 ### 📊 Live business intelligence, not just a data table
 The dashboard answers the questions an owner actually asks first thing in the morning: how many shops are active, how many invoices came in today, what's selling, and when. Best-seller tracking and peak-hour analytics turn raw invoice rows into decisions.
 
-![Dashboard](docs/screenshots/dashboard.png)
+![Dashboard](docs/screenshots/dashboard.PNG)
 
 ### 🔐 Role-based access, enforced at the schema level
 `Admin → Manager → Cashier` isn't a UI convention — it's baked into the database via table-per-type inheritance. A `Cashier` *is* a `User`, but only ever sees their assigned shop's register. A `Manager` oversees cashiers. Nobody can accidentally see, or touch, more than their role allows.
@@ -58,7 +58,7 @@ Soft-delete (`IsDeleted`) is applied consistently across `User`, `Shop`, and `Pr
 ### 🌗 Localized, and built for the person behind the register
 The interface ships in Albanian, with a dark mode toggle for late closing shifts. Account creation is admin-gated — no public sign-up, no rogue accounts.
 
-![Login](docs/screenshots/login.png)
+![Login](docs/screenshots/login.PNG)
 
 ---
 
@@ -82,7 +82,7 @@ SQL Server
 
 Multi-tenancy runs through `ShopId` on every operational table. User roles are modeled with inheritance rather than a single bloated `Users` table with nullable role-specific columns — the schema tells you what a `Manager` *is*, not just what it's allowed to do.
 
-![Entity Relationship Diagram](docs/screenshots/db-schema.png)
+![Entity Relationship Diagram](docs/screenshots/db-schema.PNG)
 
 | Entity | Responsibility |
 |---|---|
