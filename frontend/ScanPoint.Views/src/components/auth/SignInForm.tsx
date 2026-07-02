@@ -12,7 +12,7 @@ export default function SignInForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState<{ email?: string; password?: string }>({});
-  const [serverError, setServerError] = useState("Provoni përsëri.");
+  const [serverError, setServerError] = useState("");
   const [loading, setLoading] = useState(false);
 
   const navigate = useNavigate();
