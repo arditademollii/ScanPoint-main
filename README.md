@@ -129,16 +129,7 @@ Configure your connection string and JWT secret in `appsettings.Development.json
 
 The first account must be provisioned directly in the database or via a seed script — ScanPoint has no public sign-up by design.
 
----
 
-## Roadmap
-
-- [ ] Multi-currency support for cross-border chains
-- [ ] Low-stock and expiry-date alerting
-- [ ] Exportable fiscal reports (PDF/Excel)
-- [ ] Barcode scanner hardware integration testing
-
----
 
 
 
