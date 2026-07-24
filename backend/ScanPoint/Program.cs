@@ -26,11 +26,11 @@ builder.Services.AddControllers()
     });
 
 
-// DbContext
+// DbContext (PostgreSQL)
 builder.Services.AddDbContext<ScanPointDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"), sqlServerOptionsAction: sqlOptions =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"), npgsqlOptionsAction: npgsqlOptions =>
     {
-        sqlOptions.EnableRetryOnFailure(); // Kjo e ndihmon lidhjen të mos dështojë menjëherë
+        npgsqlOptions.EnableRetryOnFailure(); // Kjo e ndihmon lidhjen të mos dështojë menjëherë
     }));
 
 // -------------------- JWT Authentication --------------------
@@ -44,15 +44,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidateAudience = true,
             ValidAudience = builder.Configuration["Jwt:Audience"],
             ValidateLifetime = true,
-            // ClockSkew = Zero: token skadon SAKTËSISHT në kohën e vendosur (30min),
-            // jo 5min ekstra si default i ASP.NET Core.
             ClockSkew = TimeSpan.Zero,
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!)),
             ValidateIssuerSigningKey = true
         };
 
-        // Kthen 401 me mesazh të qartë kur token mungon/është i pavlefshëm
         options.Events = new JwtBearerEvents
         {
             OnChallenge = context =>
@@ -87,13 +84,6 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
 builder.Services.AddScoped<IUserManagementService, UserManagementService>();
 builder.Services.AddScoped<IManagerService, ManagerService>();
-//                                          ketu ki me shtu
-// ----------------------------====================================================-Dependency Injection — kur Controller kërkon IShkollaRepository, jep ShkollaRepository
-// "Scoped" = krijohet një instancë për çdo request HTTP
-
-
-
-
 
 
 // AutoMapper
@@ -141,20 +131,31 @@ builder.Services.AddCors(options =>
         policy =>
         {
             policy
-                .WithOrigins("http://localhost:5173")
+                .WithOrigins(
+                    "http://localhost:5173",
+                    "https://scanpoint-frontend.onrender.com" // ndrysho me URL-në reale kur ta krijosh frontend-in në Render
+                )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials();
         });
 });
 
-
+// -------------------- PORT (Render cakton PORT vet) --------------------
+var port = Environment.GetEnvironmentVariable("PORT") ?? "5055";
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(5055);
+    options.ListenAnyIP(int.Parse(port));
 });
 // -------------------- BUILD APP --------------------
 var app = builder.Build();
+
+// -------------------- AUTO-MIGRATE (aplikon migrimet automatikisht kur niset) --------------------
+using (var scope = app.Services.CreateScope())
+{
+    var db = scope.ServiceProvider.GetRequiredService<ScanPointDbContext>();
+    db.Database.Migrate();
+}
 
 // -------------------- MIDDLEWARE --------------------
 // RËNDËSI: Rendi i middleware-it është kritik!

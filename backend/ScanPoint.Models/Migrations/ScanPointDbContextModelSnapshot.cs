@@ -2,8 +2,8 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ScanPoint.Models.Data;
 
 #nullable disable
@@ -17,33 +17,33 @@ namespace ScanPoint.Models.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.0")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("ProductVersion", "8.0.10")
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("ScanPoint.Models.Models.Invoice", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("CashierId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SerialNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("ShopId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<decimal>("TotalAmount")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.HasKey("Id");
 
@@ -62,24 +62,24 @@ namespace ScanPoint.Models.Migrations
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid>("InvoiceId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<Guid>("ProductId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.HasKey("Id");
 
@@ -90,144 +90,42 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("InvoiceItems");
                 });
 
-            modelBuilder.Entity("ScanPoint.Models.Models.Komenti", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<int>("ID_Postimi")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ID_Postimi");
-
-                    b.ToTable("Komentet");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<DateTime>("DataPunesimit")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmriMjekut")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("EshteSpecialist")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("ID_Spitali")
-                        .HasColumnType("int");
-
-                    b.Property<decimal>("Paga")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ID_Spitali");
-
-                    b.ToTable("Mjeket");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Planet", b =>
-                {
-                    b.Property<int>("ID_Planet")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Planet"));
-
-                    b.Property<string>("EmriPlanetit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID_Planet");
-
-                    b.ToTable("Planetet");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Postimi", b =>
-                {
-                    b.Property<int>("ID_Postimi")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Postimi"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("EmriAutorit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ID_Postimi");
-
-                    b.ToTable("Postimet");
-                });
-
             modelBuilder.Entity("ScanPoint.Models.Models.Product", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Barcode")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("Category")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("ExpiryDate")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<decimal>("Price")
                         .HasPrecision(18, 2)
-                        .HasColumnType("decimal(18,2)");
+                        .HasColumnType("numeric(18,2)");
 
                     b.Property<int>("Quantity")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<Guid>("ShopId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Unit")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -239,61 +137,36 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
-                {
-                    b.Property<int>("ID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
-
-                    b.Property<string>("EmriSatelitit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ID_Planet")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
-
-                    b.HasKey("ID");
-
-                    b.HasIndex("ID_Planet");
-
-                    b.ToTable("Satelitet");
-                });
-
             modelBuilder.Entity("ScanPoint.Models.Models.Shop", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<string>("Address")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid>("AdminId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FiscalNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("VatNumber")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -305,77 +178,51 @@ namespace ScanPoint.Models.Migrations
                     b.ToTable("Shops");
                 });
 
-            modelBuilder.Entity("ScanPoint.Models.Models.Spitali", b =>
-                {
-                    b.Property<int>("ID_Spitali")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID_Spitali"));
-
-                    b.Property<DateTime>("DataHapjes")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("EmriSpitalit")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("KaUrgjence")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("NumriKateve")
-                        .HasColumnType("int");
-
-                    b.HasKey("ID_Spitali");
-
-                    b.ToTable("Spitalet");
-                });
-
             modelBuilder.Entity("ScanPoint.Models.Models.User", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("DeletedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("IsDeleted")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ProfileImagePath")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RefreshToken")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<DateTime?>("RefreshTokenExpiryTime")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Role")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<Guid?>("ShopId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("datetime2");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -394,10 +241,10 @@ namespace ScanPoint.Models.Migrations
                     b.HasBaseType("ScanPoint.Models.Models.User");
 
                     b.Property<Guid>("ManagerId")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.Property<Guid?>("ShopId1")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasIndex("ManagerId");
 
@@ -411,7 +258,7 @@ namespace ScanPoint.Models.Migrations
                     b.HasBaseType("ScanPoint.Models.Models.User");
 
                     b.Property<Guid?>("ShopId1")
-                        .HasColumnType("uniqueidentifier");
+                        .HasColumnType("uuid");
 
                     b.HasIndex("ShopId1");
 
@@ -456,28 +303,6 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("ScanPoint.Models.Models.Komenti", b =>
-                {
-                    b.HasOne("ScanPoint.Models.Models.Postimi", "Postimi")
-                        .WithMany("Komentet")
-                        .HasForeignKey("ID_Postimi")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Postimi");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Mjeku", b =>
-                {
-                    b.HasOne("ScanPoint.Models.Models.Spitali", "Spitali")
-                        .WithMany("Mjeket")
-                        .HasForeignKey("ID_Spitali")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Spitali");
-                });
-
             modelBuilder.Entity("ScanPoint.Models.Models.Product", b =>
                 {
                     b.HasOne("ScanPoint.Models.Models.Shop", "Shop")
@@ -487,17 +312,6 @@ namespace ScanPoint.Models.Migrations
                         .IsRequired();
 
                     b.Navigation("Shop");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Satelite", b =>
-                {
-                    b.HasOne("ScanPoint.Models.Models.Planet", "Planet")
-                        .WithMany("Satelitet")
-                        .HasForeignKey("ID_Planet")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Planet");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.Shop", b =>
@@ -560,16 +374,6 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Items");
                 });
 
-            modelBuilder.Entity("ScanPoint.Models.Models.Planet", b =>
-                {
-                    b.Navigation("Satelitet");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Postimi", b =>
-                {
-                    b.Navigation("Komentet");
-                });
-
             modelBuilder.Entity("ScanPoint.Models.Models.Product", b =>
                 {
                     b.Navigation("InvoiceItems");
@@ -584,11 +388,6 @@ namespace ScanPoint.Models.Migrations
                     b.Navigation("Managers");
 
                     b.Navigation("Products");
-                });
-
-            modelBuilder.Entity("ScanPoint.Models.Models.Spitali", b =>
-                {
-                    b.Navigation("Mjeket");
                 });
 
             modelBuilder.Entity("ScanPoint.Models.Models.User", b =>
