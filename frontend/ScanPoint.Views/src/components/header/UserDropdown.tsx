@@ -28,7 +28,7 @@ export default function UserDropdown() {
   };
 
   const photoSrc = userInfo?.profileImagePath
-    ? `http://localhost:5055/${userInfo.profileImagePath}`
+    ? `http://import.meta.env.VITE_API_URL/${userInfo.profileImagePath}`
     : "/images/user/owner.jpg";
 
   return (

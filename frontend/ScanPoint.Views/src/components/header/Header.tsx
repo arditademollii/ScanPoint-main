@@ -4,7 +4,7 @@ import Dropdown from "../ui/dropdown/Dropdown";
 import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { Link } from "react-router";
 
-const API_BASE = "http://localhost:5055";
+const API_BASE = "http://import.meta.env.VITE_API_URL";
 
 interface UserDto {
   username: string;

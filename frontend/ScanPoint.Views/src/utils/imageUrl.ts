@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5055";
+const API_BASE = "http://import.meta.env.VITE_API_URL";
  
 export function getProfileImageUrl(profileImagePath?: string | null): string {
   if (!profileImagePath) return "/images/user/owner.jpg";

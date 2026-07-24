@@ -34,7 +34,7 @@ export default function AdminProductsTable() {
 
   const fetchShops = async () => {
     try {
-      const res = await axios.get<Shop[]>("http://localhost:5055/api/Shops/my-shops", {
+      const res = await axios.get<Shop[]>("http://import.meta.env.VITE_API_URL/api/Shops/my-shops", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setShops(res.data);
@@ -45,7 +45,7 @@ export default function AdminProductsTable() {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get<Product[]>("http://localhost:5055/api/Products", {
+      const res = await axios.get<Product[]>("http://import.meta.env.VITE_API_URL/api/Products", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(res.data);
@@ -84,7 +84,7 @@ export default function AdminProductsTable() {
     .filter((p) => (selectedShop === "all" ? true : p.shopId === selectedShop));
 
   const deleteProduct = async (id: string) => {
-    await axios.delete(`http://localhost:5055/api/Products/${id}`, {
+    await axios.delete(`http://import.meta.env.VITE_API_URL/api/Products/${id}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -123,13 +123,13 @@ export default function AdminProductsTable() {
 
     if (editingProduct) {
       await axios.put(
-        `http://localhost:5055/api/Products/${editingProduct.id}`,
+        `http://import.meta.env.VITE_API_URL/api/Products/${editingProduct.id}`,
         productData,
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } else {
       await axios.post(
-        `http://localhost:5055/api/Products`,
+        `http://import.meta.env.VITE_API_URL/api/Products`,
         productData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

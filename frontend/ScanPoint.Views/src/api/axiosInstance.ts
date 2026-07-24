@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig, AxiosResponse } from "axios";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:5055";
+const BASE_URL = import.meta.env.VITE_API_URL || "http://import.meta.env.VITE_API_URL";
 const SESSION_KEY = "sp_auth";
 
 // --- HELPERS ---

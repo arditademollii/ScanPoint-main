@@ -321,7 +321,7 @@ export default function UserProfiles() {
   // ─────────────────────────────────────────────
   const photoSrc = useMemo(() => {
     if (profile?.profileImagePath) {
-      const baseUrl = import.meta.env.VITE_API_URL || "http://localhost:5055/";
+      const baseUrl = import.meta.env.VITE_API_URL || "http://import.meta.env.VITE_API_URL/";
       const cleanPath = profile.profileImagePath.replace(/^\/+/, "");
       return `${baseUrl}${cleanPath}?t=${imageTimestamp}`;
     }

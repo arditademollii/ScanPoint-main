@@ -32,7 +32,7 @@ export default function PosTable() {
       return;
     }
 
-    axios.defaults.baseURL = "http://localhost:5055";
+    axios.defaults.baseURL = "http://import.meta.env.VITE_API_URL";
     axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
   }, []);
 

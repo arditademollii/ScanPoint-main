@@ -94,7 +94,7 @@ export default function SignUpForm() {
       if (profileImage) data.append("ProfileImage", profileImage);
 
       const res = await axios.post(
-        "http://localhost:5055/api/Auth/register",
+        "http://import.meta.env.VITE_API_URL/api/Auth/register",
         data,
         { headers: { "Content-Type": "multipart/form-data" } }
       );
