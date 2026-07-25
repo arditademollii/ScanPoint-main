@@ -16,7 +16,7 @@ export default function PosTable() {
   const [products, setProducts] = useState<PosProduct[]>([]);
   const [amountPaid, setAmountPaid] = useState<number>(0);
   const [userRole, setUserRole] = useState<string | null>(null);
- 
+  const [shopId, setShopId] = useState<string | null>(null);
 
   // 🔹 Totali dhe change
   const total = products.reduce((acc, p) => acc + (p.price || 0) * (p.quantity || 0), 0);
