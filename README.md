@@ -17,7 +17,18 @@ Point of sale, inventory, and revenue analytics — in one system, built to run 
 [Demo](#demo) · [Features](#features) · [Architecture](#architecture) · [Setup](#getting-started) · [Live App](https://scanpoint-main.onrender.com)
 
 </div>
+## Try it Live
 
+The [live demo](https://scanpoint-main.onrender.com) is seeded with demo accounts for each role:
+
+| Role | Email | Password |
+|---|---|---|
+| Admin | `admin1@scanpoint.test` | `TestPass!123` |
+| Manager | `manager1@scanpoint.test` | `TestPass!123` |
+| Cashier | `cashier1@scanpoint.test` | `TestPass!123` |
+| Cashier | `cashier2@scanpoint.test` | `TestPass!123` |
+
+> Note: this is a hosted demo environment — data may be reset periodically.
 ---
 
 ## The Problem
