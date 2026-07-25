@@ -133,7 +133,7 @@ builder.Services.AddCors(options =>
             policy
                 .WithOrigins(
                     "http://localhost:5173",
-                    "https://scanpoint-frontend.onrender.com" // ndrysho me URL-në reale kur ta krijosh frontend-in në Render
+                    "https://scanpoint-main.onrender.com"
                 )
                 .AllowAnyHeader()
                 .AllowAnyMethod()
