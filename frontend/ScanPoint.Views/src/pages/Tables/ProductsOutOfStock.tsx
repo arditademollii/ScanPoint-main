@@ -30,7 +30,7 @@ export default function AdminProductsTable() {
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
-  const { user } = useAuth();
+  const { user, userInfo } = useAuth();
   const role = user?.role ?? null;
 
   // Fetch shops

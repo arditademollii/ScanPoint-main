@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHeader, TableRow } from "../../components/ui/table";
 import api from "../../api/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
@@ -108,7 +108,7 @@ export default function AdminProductsTable() {
   const [formErrors, setFormErrors] = useState<FormErrors>({});
   const [submitLoading, setSubmitLoading] = useState(false);
 
-  const { user } = useAuth();
+  const { user, userInfo } = useAuth();
   const role = user?.role?.toLowerCase() ?? null;
 
   const fetchShops = async () => {

@@ -12,13 +12,13 @@ interface PosProduct {
 }
 
 export default function PosTable() {
-  const { user } = useAuth();
+  const { user, userInfo } = useAuth();
   const [search, setSearch] = useState("");
   const [products, setProducts] = useState<PosProduct[]>([]);
   const [amountPaid, setAmountPaid] = useState<number>(0);
 
   // 🔹 Key unik për çdo cashier
-  const storageKey = user ? `pos_products_${user.id}` : "pos_products_guest";
+  const storageKey = userInfo ? `pos_products_${userInfo.username}` : "pos_products_guest";
 
   // 🔹 Ngarko produktet nga localStorage kur hapet komponenti
   useEffect(() => {

@@ -22,8 +22,7 @@ const AppLayout = lazy(() => import("./layout/AppLayout"));
 
 // Dashboard
 const Home           = lazy(() => import("./pages/Dashboard/Home"));
-const UserHome       = lazy(() => import("./pages/Dashboard/UserHome"));
-const ModeratorHome  = lazy(() => import("./pages/Dashboard/ModeratorHome"));
+
 
 // Tables
 const CashiersTable         = lazy(() => import("./pages/Tables/CashiersTable"));
