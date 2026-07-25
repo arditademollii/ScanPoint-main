@@ -1,146 +1,195 @@
-<div align="center">
+# TailAdmin React - Free React Tailwind Admin Dashboard Template
 
-# ScanPoint
+[![Live Demo](https://img.shields.io/badge/🚀_Live_Demo-scanpoint--main.onrender.com-brightgreen?style=for-the-badge)](https://scanpoint-main.onrender.com)
 
-**Multi-shop retail management, reinvented for the counter.**
+TailAdmin is a free and open-source admin dashboard template built on **React and Tailwind CSS**, providing developers
+with everything they need to create a comprehensive, data-driven back-end,
+dashboard, or admin panel solution for upcoming web projects.
 
-Point of sale, inventory, and revenue analytics — in one system, built to run across as many shops as you can open.
+With TailAdmin, you get access to all the necessary dashboard UI components, elements, and pages required to build a
+feature-rich and complete dashboard or admin panel. Whether you're building dashboard or admin panel for a complex web
+application or a simple website, TailAdmin is the perfect solution to help you get up and running quickly.
 
-[![.NET](https://img.shields.io/badge/.NET-8-512BD4?logo=dotnet&logoColor=white)](#)
-[![React](https://img.shields.io/badge/React-TypeScript-61DAFB?logo=react&logoColor=white)](#)
-[![SQL Server](https://img.shields.io/badge/Database-MSSQL-CC2927?logo=microsoftsqlserver&logoColor=white)](#)
-[![JWT Auth](https://img.shields.io/badge/Auth-JWT%20%2B%20Refresh%20Tokens-black)](#)
-[![License](https://img.shields.io/badge/license-MIT-green)](#license)
+![TailAdmin React.js Dashboard Preview](./banner.png)
 
-[Demo](#demo) · [Features](#features) · [Architecture](#architecture) · [Setup](#getting-started)
+## Overview
 
-</div>
+TailAdmin provides essential UI components and layouts for building feature-rich, data-driven admin dashboards and
+control panels. It's built on:
 
----
+- React 19
+- TypeScript
+- Tailwind CSS v4
 
-## The Problem
+### Quick Links
 
-Small and mid-sized retail chains run on duct tape.
+- [✨ Visit Website](https://tailadmin.com)
+- [📄 Documentation](https://tailadmin.com/docs)
+- [⬇️ Download](https://tailadmin.com/download)
+- [🖌️ Figma Design File (Community Edition)](https://www.figma.com/community/file/1214477970819985778)
+- [⚡ Get PRO Version](https://tailadmin.com/pricing)
 
-Every shop keeps its own spreadsheet. Stock counts live in someone's head until they don't. Cashiers get full database access because nobody built a role system. Fiscal numbers, VAT numbers, expiry dates — the stuff a tax audit actually asks for — get bolted on after the fact, if at all.
+### Demos
 
-Off-the-shelf POS software either costs more than the business can justify, or assumes you have one register in one store. Neither works for an owner who's opening a second location.
+- [Free Version](https://free-react-demo.tailadmin.com/)
+- [Pro Version](https://react-demo.tailadmin.com)
 
-## The Solution
+### Other Versions
 
-**ScanPoint** is a multi-tenant POS and inventory platform built around one idea: a shop owner should see *everything*, and a cashier should see *exactly enough*.
+- [HTML Version](https://github.com/TailAdmin/tailadmin-free-tailwind-dashboard-template)
+- [Next.js Version](https://github.com/TailAdmin/free-nextjs-admin-dashboard)
+- [Vue.js Version](https://github.com/TailAdmin/vue-tailwind-admin-dashboard)
+- [Angular Version](https://github.com/TailAdmin/free-angular-tailwind-dashboard)
+- [Laravel Version](https://github.com/TailAdmin/tailadmin-laravel)
 
-Every shop is isolated at the data layer. Every account is provisioned by an admin, not self-registered. Every product carries a barcode, a category, and an expiry date from day one. Every invoice is tied to the cashier who issued it and the shop it belongs to — because when the numbers don't add up, you need to know where to look.
+## Installation
 
-It's the kind of system you'd expect from a team, built as a solo full-stack engineering project — schema design, API, auth, and UI, end to end.
+### Prerequisites
 
----
+To get started with TailAdmin, ensure you have the following prerequisites installed and set up:
 
-## Features
+- Node.js 18.x or later (recommended to use Node.js 20.x or later)
 
-### 📊 Live business intelligence, not just a data table
-The dashboard answers the questions an owner actually asks first thing in the morning: how many shops are active, how many invoices came in today, what's selling, and when. Best-seller tracking and peak-hour analytics turn raw invoice rows into decisions.
+### Cloning the Repository
 
-![Dashboard](docs/screenshots/dashboard.PNG)
-
-### 🔐 Role-based access, enforced at the schema level
-`Admin → Manager → Cashier` isn't a UI convention — it's baked into the database via table-per-type inheritance. A `Cashier` *is* a `User`, but only ever sees their assigned shop's register. A `Manager` oversees cashiers. Nobody can accidentally see, or touch, more than their role allows.
-
-### 🧾 Invoicing built for real tax compliance
-Shops carry `FiscalNumber` and `VatNumber` from creation — not an afterthought bolted on before an audit. Every `Invoice` links a `SerialNumber`, a `Cashier`, and a `Shop`, with itemized `InvoiceItem` rows tracing every sale back to a specific `Product`.
-
-### 📦 Inventory that knows what it's selling
-Products carry barcodes, categories, units, live quantities, and expiry dates — the fields an actual stockroom needs, not just a name and a price.
-
-### 🕵️ Nothing is ever really deleted
-Soft-delete (`IsDeleted`) is applied consistently across `User`, `Shop`, and `Product`. Data gets hidden from the UI, never destroyed — because in retail, "undo" is a business requirement, not a nice-to-have.
-
-### 🌗 Localized, and built for the person behind the register
-The interface ships in Albanian, with a dark mode toggle for late closing shifts. Account creation is admin-gated — no public sign-up, no rogue accounts.
-
-![Login](docs/screenshots/login.PNG)
-
----
-
-## Architecture
-
-ScanPoint follows a clean separation between a stateless **.NET Web API** and a **React + TypeScript** client, talking over a versioned REST contract secured with JWT access tokens and rotating refresh tokens.
-
-```
-Client (React + TypeScript)
-        │  REST + JWT
-        ▼
-API (.NET, Controllers → Services → Repositories)
-        │  EF Core
-        ▼
-SQL Server
-```
-
-**Why this shape:** the layered backend keeps controllers thin, business rules in services, and data access behind repositories — so the schema (below) can evolve without rewriting the API surface on top of it.
-
-### Data model
-
-Multi-tenancy runs through `ShopId` on every operational table. User roles are modeled with inheritance rather than a single bloated `Users` table with nullable role-specific columns — the schema tells you what a `Manager` *is*, not just what it's allowed to do.
-
-![Entity Relationship Diagram](docs/screenshots/db-schema.PNG)
-
-| Entity | Responsibility |
-|---|---|
-| `User` | Base identity: credentials, role, refresh token, soft-delete flag |
-| `Shop` | Tenant boundary: fiscal identity, VAT number, admin owner |
-| `Manager` / `Cashier` | Role-specific extensions of `User`, with a `Manager → Cashier` hierarchy |
-| `Product` | Inventory unit: barcode, price, quantity, category, expiry |
-| `Invoice` / `InvoiceItem` | Transaction record and its line items, scoped to shop and cashier |
-
----
-
-## Demo
-
-Scanning a product, building an invoice, and watching the dashboard update — in real time:
-
-![Product & Invoice flow demo](docs/demo/ProductsInvoices.gif)
-
-Prefer full quality with sound? Here's the full walkthrough:
-
-https://github.com/user-attachments/assets/dd409885-3ce6-4ee4-aae6-359d0c2bf82a
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| Frontend | React, TypeScript |
-| Backend | .NET (ASP.NET Core Web API) |
-| Database | Microsoft SQL Server, EF Core |
-| Auth | JWT access tokens + refresh token rotation |
-| Architecture | Layered (Controller → Service → Repository), Repository Pattern, DTOs |
-
----
-
-## Getting Started
+Clone the repository using the following command:
 
 ```bash
-# Clone
-git clone https://github.com/arditademollii/ScanPoint.git
-cd ScanPoint
-
-# Backend
-cd api
-dotnet restore
-dotnet ef database update
-dotnet run
-
-# Frontend
-cd ../client
-npm install
-npm run dev
+git clone https://github.com/TailAdmin/free-react-tailwind-admin-dashboard.git
 ```
 
-Configure your connection string and JWT secret in `appsettings.Development.json` before running migrations.
+> Windows Users: place the repository near the root of your drive if you face issues while cloning.
 
-The first account must be provisioned directly in the database or via a seed script — ScanPoint has no public sign-up by design.
+1. Install dependencies:
 
----
+```bash
+   npm install
+   # or
+   yarn install
+```
 
-</div>
+
+2. Start the development server:
+```bash
+   npm run dev
+   # or
+   yarn dev
+```
+
+## Components
+
+TailAdmin is a pre-designed starting point for building a web-based dashboard using React.js and Tailwind CSS. The
+template includes:
+
+- Sophisticated and accessible sidebar
+- Data visualization components
+- Prebuilt profile management and 404 page
+- Tables and Charts(Line and Bar)
+- Authentication forms and input elements
+- Alerts, Dropdowns, Modals, Buttons and more
+- Can't forget Dark Mode 🕶️
+
+All components are built with React and styled using Tailwind CSS for easy customization.
+
+## Feature Comparison
+
+### Free Version
+
+- 1 Unique Dashboard
+- 30+ dashboard components
+- 50+ UI elements
+- Basic Figma design files
+- Community support
+
+### Pro Version
+
+- 7 Unique Dashboards: Analytics, Ecommerce, Marketing, CRM, SaaS, Stocks, Logistics (more coming soon)
+- 500+ dashboard components and UI elements
+- Complete Figma design file
+- Email support
+
+To learn more about pro version features and pricing, visit our [pricing page](https://tailadmin.com/pricing).
+
+## Changelog
+
+### Version 2.0.2 - [March 25, 2025]
+
+- Upgraded to React 19
+- Included overrides for packages to prevent peer dependency errors.
+- Migrated from react-flatpickr to flatpickr package for React 19 support
+
+### Version 2.0.1 - [February 27, 2025]
+
+#### Update Overview
+
+- Upgraded to Tailwind CSS v4 for better performance and efficiency.
+- Updated class usage to match the latest syntax and features.
+- Replaced deprecated class and optimized styles.
+
+#### Next Steps
+
+- Run npm install or yarn install to update dependencies.
+- Check for any style changes or compatibility issues.
+- Refer to the Tailwind CSS v4 [Migration Guide](https://tailwindcss.com/docs/upgrade-guide) on this release. if needed.
+- This update keeps the project up to date with the latest Tailwind improvements. 🚀
+
+### Version 2.0.0 - [February 2025]
+
+A major update with comprehensive redesign and modern React patterns implementation.
+
+#### Major Improvements
+
+- Complete UI redesign with modern React patterns
+- New features: collapsible sidebar, chat, and calendar
+- Improved performance and accessibility
+- Updated data visualization using ApexCharts
+
+#### Key Features
+
+- Redesigned dashboards (Ecommerce, Analytics, Marketing, CRM)
+- Enhanced navigation with React Router integration
+- Advanced tables with sorting and filtering
+- Calendar with drag-and-drop support
+- New UI components and improved existing ones
+
+#### Breaking Changes
+
+- Updated sidebar component API
+- Migrated charts to ApexCharts
+- Revised authentication system
+
+[Read more](https://tailadmin.com/docs/update-logs/react) on this release.
+
+### Version 1.3.7 - [June 20, 2024]
+
+#### Enhancements
+
+1. Remove Repetition of DefaultLayout in every Pages
+2. Add ClickOutside Component for reduce repeated functionality in Header Message, Notification and User Dropdowns.
+
+### Version 1.3.6 - [Jan 31, 2024]
+
+#### Enhancements
+
+1. Integrate flatpickr in [Date Picker/Form Elements]
+2. Change color after select an option [Select Element/Form Elements].
+3. Make it functional [Multiselect Dropdown/Form Elements].
+4. Make best value editable [Pricing Table One/Pricing Table].
+5. Rearrange Folder structure.
+
+### Version 1.2.0 - [Apr 28, 2023]
+
+- Add Typescript in TailAdmin React.
+
+### Version 1.0.0 - Initial Release - [Mar 13, 2023]
+
+- Initial release of TailAdmin React.
+
+## License
+
+TailAdmin React.js Free Version is released under the MIT License.
+
+## Support
+
+If you find this project helpful, please consider giving it a star on GitHub. Your support helps us continue developing
+and maintaining this template.
